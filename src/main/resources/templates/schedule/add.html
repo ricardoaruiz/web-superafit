@@ -1,0 +1,90 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+
+	<th:block layout:fragment="content">
+	
+		<div id="principal">
+	
+			<div class="page-header">
+			  <h2>Horários<small> da semana</small></h2>
+			</div>	
+
+			<form id="addSchedule" action="add" method="POST" class="col s12" th:object="${schedule}">
+			
+				<br/>
+				<div>
+					<div class="alert alert-success" th:text="${mensagem}" 
+						th:if="${not #strings.isEmpty(mensagem)}">
+					</div>		   
+				   
+				   	<div id="erros" class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+						<ul th:each="detailedError : ${#fields.detailedErrors()}">
+							<li th:text="${detailedError.message}"></li>
+						</ul>
+					</div>
+				</div> 		
+			
+			
+				<div class="row">
+					<div class="input-field col s12" th:classappend="${#fields.hasErrors('weekDay')} ? invalid">
+					  <select id="weekDay" name="weekDay" th:field="*{weekDay}" class="invalid">
+					    <option value="" disabled="true" selected="true">Selecione o dia da semana</option>
+					    <option value="1">Segunda-feira</option>
+					    <option value="2">Terça-feira</option>
+					    <option value="3">Quarta-feira</option>
+					    <option value="4">Quinta-feira</option>
+					    <option value="5">Sexta-feira</option>
+					    <option value="6">Sábado</option>
+					  </select>
+					  <label>Dia da semana</label>
+					</div>
+				</div>			
+						
+				<div class="row">			       
+			       <div class="input-field col s12 m6 l6">
+			          <input id="scheduleStart" name="scheduleStart" type="text" class="timepicker" th:field="*{scheduleStart}" th:classappend="${#fields.hasErrors('scheduleStart')} ? invalid"/>
+			          <label for="scheduleStart">Hora Início</label>
+			       </div>
+			       
+			       <div class="input-field col s12 m6 l6">
+			          <input id="scheduleEnd" name="scheduleEnd" type="text" class="timepicker" th:field="*{scheduleEnd}" th:classappend="${#fields.hasErrors('scheduleEnd')} ? invalid"/>
+			          <label for="scheduleEnd">Hora Fim</label>
+			       </div>
+			     </div>
+			     
+			</form>
+	
+			<div class="fixed-action-btn horizontal">
+			  <a class="btn-floating btn-large red">
+			    <i class="large material-icons">menu</i>
+			  </a>
+			  <ul>
+			    <li><a class="btn-floating waves-effect waves-light red" href="#" onclick="document.forms[0].submit();"><i class="material-icons">done</i></a></li>
+			    <li><a class="btn-floating waves-effect waves-light red" href="/schedule"><i class="material-icons">replay</i></a></li>
+			  </ul>
+			</div>
+		
+		</div>
+	
+	</th:block>
+
+</html>	
+<script>
+$(document).ready(function() {
+	$('select').material_select();
+	
+	
+	$('.timepicker').pickatime({
+		default: 'now', // Set default time
+		fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+		twelvehour: false, // Use AM/PM or 24-hour format
+		donetext: 'OK', // text for done-button
+		cleartext: 'Limpar', // text for clear-button
+		canceltext: 'Cancelar', // Text for cancel-button
+		autoclose: false, // automatic close timepicker
+		ampmclickable: true, // make AM PM clickable,
+		aftershow: function(){}, //Function for after opening timepicker
+	});
+});
+</script>

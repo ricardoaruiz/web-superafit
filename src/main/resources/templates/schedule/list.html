@@ -1,0 +1,60 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+
+	<th:block layout:fragment="content">	
+	
+		<div id="principal">
+
+			<div class="page-header">
+			  <h2>Horários<small> da semana</small></h2>
+			</div>
+
+			<div th:each="item : ${list.schedules}">
+				<br/>
+				<div class="chip">
+				  <div th:text="${item.weekDay}"></div>
+				</div>				
+
+				<table class="bordered highlight centered">
+					<thead>
+					  <tr>
+					      <th>Início</th>
+					      <th>Término</th>
+					      <th>Ações</th>
+					  </tr>
+					</thead>					
+					<tbody>
+					  <tr th:each="daySchedule : ${item.daySchedules}">
+					    <td> <span th:text="${daySchedule.scheduleStart}"></span> </td>
+					    <td> <span th:text="${daySchedule.scheduleEnd}"></span> </td>
+					    <td> 
+					    	<i class="material-icons">mode_edit</i>
+					    	<i class="material-icons">delete</i>
+					    </td>
+					    
+					  </tr>
+					</tbody>
+				</table>			
+			</div>
+			
+		</div>
+		
+		<div class="fixed-action-btn horizontal">
+		  <a class="btn-floating btn-large red">
+		    <i class="large material-icons">menu</i>
+		  </a>
+		  <ul>
+		    <li><a class="btn-floating waves-effect waves-light red"><i class="material-icons">phonelink_ring</i></a></li>
+		    <li><a class="btn-floating waves-effect waves-light red" href="schedule/add"><i class="material-icons">add</i></a></li>
+		  </ul>
+		</div>			
+		
+	</th:block>
+
+</html>
+<script>
+$( document ).ready(function(){
+	$(".button-collapse").sideNav();
+})
+</script>
