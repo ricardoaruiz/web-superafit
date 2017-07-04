@@ -15,11 +15,6 @@ import br.com.rar.superafit.superafitbackoffice.controller.model.Pessoa;
 @RequestMapping("/principal")
 public class PrincipalController {
 
-	@RequestMapping("/")
-	public String index() {
-		return "index";
-	}
-
 	@RequestMapping(method=RequestMethod.GET)
 	public ModelAndView novo(Pessoa pessoa) {
 		ModelAndView mav = new ModelAndView("principal");

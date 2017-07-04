@@ -4,7 +4,7 @@
 
 	<th:block layout:fragment="content">	
 	
-		<div id="principal">
+		<div id="principal" class="container">
 
 			<div class="page-header">
 			  <h2>Horários<small> da semana</small></h2>
@@ -13,7 +13,9 @@
 			<div th:each="item : ${list.schedules}">
 				<br/>
 				<div class="chip">
-				  <div th:text="${item.weekDay}"></div>
+				  <i class="material-icons prefix">subtitles</i>
+				  <span th:text="${item.weekDay}">
+				  </span>
 				</div>				
 
 				<table class="bordered highlight centered">
@@ -26,11 +28,17 @@
 					</thead>					
 					<tbody>
 					  <tr th:each="daySchedule : ${item.daySchedules}">
-					    <td> <span th:text="${daySchedule.scheduleStart}"></span> </td>
-					    <td> <span th:text="${daySchedule.scheduleEnd}"></span> </td>
 					    <td> 
-					    	<i class="material-icons">mode_edit</i>
-					    	<i class="material-icons">delete</i>
+					        <i class="material-icons prefix">query_builder</i>
+					    	<span th:text="${daySchedule.scheduleStart}"></span> 
+					    </td>
+					    <td>
+					    	<i class="material-icons prefix">query_builder</i> 
+					    	<span th:text="${daySchedule.scheduleEnd}"></span> 
+					    </td>
+					    <td> 
+					    	<i class="material-icons sf-link">mode_edit</i>
+					    	<i class="material-icons sf-link">delete</i>
 					    </td>
 					    
 					  </tr>
@@ -41,20 +49,25 @@
 		</div>
 		
 		<div class="fixed-action-btn horizontal">
-		  <a class="btn-floating btn-large red">
+		  <a class="btn-floating btn-large tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Ações">
 		    <i class="large material-icons">menu</i>
 		  </a>
 		  <ul>
-		    <li><a class="btn-floating waves-effect waves-light red"><i class="material-icons">phonelink_ring</i></a></li>
-		    <li><a class="btn-floating waves-effect waves-light red" href="schedule/add"><i class="material-icons">add</i></a></li>
+		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Publicar horário"><i class="material-icons">phonelink_ring</i></a></li>
+		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Adicionar" href="schedule/add"><i class="material-icons">add</i></a></li>
 		  </ul>
 		</div>			
-		
+				
 	</th:block>
 
 </html>
 <script>
 $( document ).ready(function(){
 	$(".button-collapse").sideNav();
+	
+	$('.sf-link').click(function() {
+		Materialize.toast('I am a toast!', 4000)
+	});
+	
 })
 </script>

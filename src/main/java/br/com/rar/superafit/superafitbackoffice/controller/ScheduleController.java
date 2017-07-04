@@ -45,6 +45,8 @@ public class ScheduleController {
 			return add(schedule);
 		}
 		
+		scheduleService.create(schedule);
+		
 		ModelAndView mv = new ModelAndView("redirect:/schedule/add");
 		attributes.addFlashAttribute("mensagem", "Horário salvo com sucesso.");
 		return mv;

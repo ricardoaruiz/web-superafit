@@ -5,9 +5,10 @@
 	<th:block layout:include="fragments/header"/>
 	
 	<body>
-		<div class="container-fluid">
+		<div >
 			<th:block layout:replace="fragments/menu"/>		
-			<th:block layout:fragment="content"/>				
+			<th:block layout:fragment="content"/>
+			<th:block layout:replace="fragments/footer"/>
 			<th:block layout:include="fragments/scripts :: end"/>
 		</div>
 	</body>

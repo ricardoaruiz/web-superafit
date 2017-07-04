@@ -4,7 +4,7 @@
 
 	<th:block layout:fragment="content">
 	
-		<div id="principal">
+		<div id="principal" class="container">
 	
 			<div class="page-header">
 			  <h2>Horários<small> da semana</small></h2>
@@ -28,6 +28,7 @@
 			
 				<div class="row">
 					<div class="input-field col s12" th:classappend="${#fields.hasErrors('weekDay')} ? invalid">
+					  <i class="material-icons prefix">subtitles</i>
 					  <select id="weekDay" name="weekDay" th:field="*{weekDay}" class="invalid">
 					    <option value="" disabled="true" selected="true">Selecione o dia da semana</option>
 					    <option value="1">Segunda-feira</option>
@@ -43,11 +44,13 @@
 						
 				<div class="row">			       
 			       <div class="input-field col s12 m6 l6">
+			          <i class="material-icons prefix">query_builder</i>
 			          <input id="scheduleStart" name="scheduleStart" type="text" class="timepicker" th:field="*{scheduleStart}" th:classappend="${#fields.hasErrors('scheduleStart')} ? invalid"/>
 			          <label for="scheduleStart">Hora Início</label>
 			       </div>
 			       
 			       <div class="input-field col s12 m6 l6">
+			       	  <i class="material-icons prefix">query_builder</i>
 			          <input id="scheduleEnd" name="scheduleEnd" type="text" class="timepicker" th:field="*{scheduleEnd}" th:classappend="${#fields.hasErrors('scheduleEnd')} ? invalid"/>
 			          <label for="scheduleEnd">Hora Fim</label>
 			       </div>
@@ -56,18 +59,19 @@
 			</form>
 	
 			<div class="fixed-action-btn horizontal">
-			  <a class="btn-floating btn-large red">
+			  <a class="btn-floating btn-large tooltipped tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Ações">
 			    <i class="large material-icons">menu</i>
 			  </a>
 			  <ul>
-			    <li><a class="btn-floating waves-effect waves-light red" href="#" onclick="document.forms[0].submit();"><i class="material-icons">done</i></a></li>
-			    <li><a class="btn-floating waves-effect waves-light red" href="/schedule"><i class="material-icons">replay</i></a></li>
+			    <li><a class="btn-floating waves-effect waves-light tooltipped tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Voltar" href="/schedule"><i class="material-icons">replay</i></a></li>
+			    <li><a class="btn-floating waves-effect waves-light tooltipped tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Confirmar" href="#" onclick="document.forms[0].submit();"><i class="material-icons">done</i></a></li>
 			  </ul>
 			</div>
 		
 		</div>
 	
 	</th:block>
+
 
 </html>	
 <script>
