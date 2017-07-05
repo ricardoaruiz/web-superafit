@@ -2,6 +2,8 @@ package br.com.rar.superafit.superafitbackoffice.controller;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,17 +22,23 @@ import br.com.rar.superafit.superafitbackoffice.utils.MessageEnum;
 @RequestMapping("schedule")
 public class ScheduleController {
 
+	private final Logger LOG = LoggerFactory.getLogger(ScheduleController.class);
+	
 	@Autowired
 	private ScheduleService scheduleService;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ModelAndView list(RedirectAttributes attributes) {
 		
+		LOG.info("Listando os horários");
+		
 		ModelAndView mav = new ModelAndView("schedule/list");
 		try {
 			ListScheduleResponse list = scheduleService.list();			
 			mav.addObject("list", list);
+			LOG.info("Horários listados com sucesso.");
 		} catch(ApiServiceException e) {
+			LOG.error("Erro ao consultar os horários");
 			mav.addObject("apiErrors", e.getErrors());
 		}
 		return mav;

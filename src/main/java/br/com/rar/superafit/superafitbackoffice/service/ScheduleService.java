@@ -2,6 +2,9 @@ package br.com.rar.superafit.superafitbackoffice.service;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.rar.superafit.superafitbackoffice.controller.model.Schedule;
@@ -16,9 +19,14 @@ import retrofit2.Response;
 @Service
 public class ScheduleService {
 
+	private final Logger LOG = LoggerFactory.getLogger(ScheduleService.class);
+	
+	@Autowired
+	private WebServiceClient webServiceClient;
+	
 	public ListScheduleResponse list() {				
 		try {
-			Call<ListScheduleResponse> call = WebServiceClient.getInstance().getScheduleWebService().list();
+			Call<ListScheduleResponse> call = webServiceClient.getScheduleWebService().list();
 			Response<ListScheduleResponse> response = call.execute();
 			
 			if(!response.isSuccessful()) {			
@@ -27,19 +35,21 @@ public class ScheduleService {
 			
 			return response.body();
 		} catch (IOException e) {
+			LOG.error("Erro ao consultar os horários", e);
 			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
 		}
 	}
 
 	public void create(Schedule schedule) {		
 		try {			
-			Call<Void> call = WebServiceClient.getInstance().getScheduleWebService().create(getCreateScheduleRequest(schedule));
+			Call<Void> call = webServiceClient.getScheduleWebService().create(getCreateScheduleRequest(schedule));
 			Response<Void> response = call.execute();
 			
 			if(!response.isSuccessful()) {			
 				throw new ApiServiceException(response);
 			}			
 		} catch (IOException e) {
+			LOG.error("Erro ao criar horário", e);
 			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
 		}		
 	}
