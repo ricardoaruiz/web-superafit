@@ -29,7 +29,9 @@ public class ScheduleService {
 			Call<ListScheduleResponse> call = webServiceClient.getScheduleWebService().list();
 			Response<ListScheduleResponse> response = call.execute();
 			
-			if(!response.isSuccessful()) {			
+			LOG.info("Consulta horários http-status: " + response.code());
+			if(!response.isSuccessful()) {
+				LOG.info("Consulta horários body-error: " + response.errorBody().string());
 				throw new ApiServiceException(response);
 			}
 			
@@ -45,7 +47,9 @@ public class ScheduleService {
 			Call<Void> call = webServiceClient.getScheduleWebService().create(getCreateScheduleRequest(schedule));
 			Response<Void> response = call.execute();
 			
-			if(!response.isSuccessful()) {			
+			LOG.info("Criar horário http-status: " + response.code());
+			if(!response.isSuccessful()) {
+				LOG.info("Criar horário body-error: " + response.errorBody().string());
 				throw new ApiServiceException(response);
 			}			
 		} catch (IOException e) {
