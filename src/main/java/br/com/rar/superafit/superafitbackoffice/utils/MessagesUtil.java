@@ -20,7 +20,7 @@ public class MessagesUtil {
 	private MessagesUtil() {
     	try {
 	    	prop = new Properties();
-	    	InputStream in = getClass().getResourceAsStream("messages.properties");
+	    	InputStream in = getClass().getClassLoader().getResourceAsStream("br/com/rar/superafit/superafitbackoffice/utils/messages.properties");
 			prop.load(in);
 			in.close();
 		} catch (IOException e) {
