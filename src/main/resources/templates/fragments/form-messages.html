@@ -1,0 +1,12 @@
+<div lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    
+    <th:block layout:replace="fragments/messages"/>
+            		   
+   	<div id="validationErrors" class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+		<ul th:each="detailedError : ${#fields.detailedErrors()}">
+			<li th:text="${detailedError.message}"></li>
+		</ul>
+	</div>	
+					   
+</div> 

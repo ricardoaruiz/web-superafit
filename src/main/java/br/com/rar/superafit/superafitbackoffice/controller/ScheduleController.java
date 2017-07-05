@@ -14,7 +14,7 @@ import br.com.rar.superafit.superafitbackoffice.controller.model.Schedule;
 import br.com.rar.superafit.superafitbackoffice.model.ListScheduleResponse;
 import br.com.rar.superafit.superafitbackoffice.service.ScheduleService;
 import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
-import br.com.rar.superafit.superafitbackoffice.utils.MessagesUtil;
+import br.com.rar.superafit.superafitbackoffice.utils.MessageEnum;
 
 @Controller
 @RequestMapping("schedule")
@@ -24,12 +24,15 @@ public class ScheduleController {
 	private ScheduleService scheduleService;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ModelAndView list() {
-		
-		ListScheduleResponse list = scheduleService.list();
+	public ModelAndView list(RedirectAttributes attributes) {
 		
 		ModelAndView mav = new ModelAndView("schedule/list");
-		mav.addObject("list", list);
+		try {
+			ListScheduleResponse list = scheduleService.list();			
+			mav.addObject("list", list);
+		} catch(ApiServiceException e) {
+			mav.addObject("apiErrors", e.getErrors());
+		}
 		return mav;
 	}
 	
@@ -50,7 +53,7 @@ public class ScheduleController {
 		ModelAndView mv = new ModelAndView("redirect:/schedule/add");
 		try {
 			scheduleService.create(schedule);			
-			attributes.addFlashAttribute("success", MessagesUtil.getInstance().get("schedule_msg_saved_success"));
+			attributes.addFlashAttribute("success", MessageEnum.SCHEDULE_MSG_SAVED_SUCCESS.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute("apiErrors", e.getErrors());
 			attributes.addFlashAttribute("schedule", schedule);

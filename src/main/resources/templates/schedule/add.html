@@ -12,25 +12,7 @@
 
 			<form id="addSchedule" action="add" method="POST" class="col s12" th:object="${schedule}">
 			
-				<br/>
-				<div>
-					<div class="alert alert-success" th:text="${success}" 
-						th:if="${not #strings.isEmpty(success)}">
-					</div>	
-						   
-				   	<div id="validationErrors" class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
-						<ul th:each="detailedError : ${#fields.detailedErrors()}">
-							<li th:text="${detailedError.message}"></li>
-						</ul>
-					</div>					   
-				   
-				   	<div id="apiErrors" class="alert alert-danger" th:if="${apiErrors != null}">
-						<ul th:each="apiError : ${apiErrors.errors}">
-							<li th:text="${apiError.error}"></li>
-						</ul>
-					</div>
-				</div> 		
-			
+				<th:block layout:replace="fragments/form-messages"/>
 			
 				<div class="row">
 					<div class="input-field col s12" th:classappend="${#fields.hasErrors('weekDay')} ? invalid">
@@ -69,7 +51,7 @@
 			    <i class="large material-icons">menu</i>
 			  </a>
 			  <ul>
-			    <li><a class="btn-floating waves-effect waves-light tooltipped tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Voltar" href="/schedule"><i class="material-icons">replay</i></a></li>
+			    <li><a class="btn-floating waves-effect waves-light tooltipped tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Voltar" href="/schedule"><i class="material-icons">skip_previous</i></a></li>
 			    <li><a class="btn-floating waves-effect waves-light tooltipped tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Confirmar" href="#" onclick="document.forms[0].submit();"><i class="material-icons">done</i></a></li>
 			  </ul>
 			</div>

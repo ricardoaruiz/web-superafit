@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.rar.superafit.superafitbackoffice.model.ErrorsResponse;
-import br.com.rar.superafit.superafitbackoffice.utils.MessagesUtil;
+import br.com.rar.superafit.superafitbackoffice.utils.MessageEnum;
 import retrofit2.Response;
 
 @Component
@@ -23,16 +23,16 @@ public class ApiServiceException extends RuntimeException {
 	
 	}
 	
-	public ApiServiceException(Response<Void> response) {
+	public ApiServiceException(Response response) {
 		try {
 			if(response.code() == HttpsURLConnection.HTTP_UNAVAILABLE) {
-				addError(MessagesUtil.getInstance().get("api_msg_unavailable"));
+				addError(MessageEnum.API_MSG_UNAVAILABLE.getMsg());
 			} else {
 				ObjectMapper om = new ObjectMapper();
 				errors = om.readValue(response.errorBody().string(), ErrorsResponse.class);
 			}
 		} catch (IOException e) {
-			addError(MessagesUtil.getInstance().get("api_generic_error"));
+			addError(MessageEnum.API_GENERIC_ERROR.getMsg());
 			
 		}
 	}
