@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import br.com.rar.superafit.superafitbackoffice.controller.model.Schedule;
 import br.com.rar.superafit.superafitbackoffice.model.CreateScheduleRequest;
 import br.com.rar.superafit.superafitbackoffice.model.ListScheduleResponse;
+import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
+import br.com.rar.superafit.superafitbackoffice.utils.MessagesUtil;
 import br.com.rar.superafit.superafitbackoffice.webservice.WebServiceClient;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -40,15 +42,12 @@ public class ScheduleService {
 			Call<Void> call = WebServiceClient.getInstance().getScheduleWebService().create(request);
 			Response<Void> response = call.execute();
 			
-			if(response.isSuccessful()) {
-				System.out.println("Sucesso");
-			} else {
-				System.out.println("Erro");
+			if(!response.isSuccessful()) {			
+				throw new ApiServiceException(response);
 			}
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ApiServiceException(MessagesUtil.getInstance().get("api_generic_error"));
 		}
 		
 	}

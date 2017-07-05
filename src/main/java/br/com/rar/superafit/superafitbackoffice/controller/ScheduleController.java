@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.rar.superafit.superafitbackoffice.controller.model.Schedule;
 import br.com.rar.superafit.superafitbackoffice.model.ListScheduleResponse;
 import br.com.rar.superafit.superafitbackoffice.service.ScheduleService;
+import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
+import br.com.rar.superafit.superafitbackoffice.utils.MessagesUtil;
 
 @Controller
 @RequestMapping("schedule")
@@ -45,10 +47,14 @@ public class ScheduleController {
 			return add(schedule);
 		}
 		
-		scheduleService.create(schedule);
-		
 		ModelAndView mv = new ModelAndView("redirect:/schedule/add");
-		attributes.addFlashAttribute("mensagem", "Horário salvo com sucesso.");
+		try {
+			scheduleService.create(schedule);			
+			attributes.addFlashAttribute("success", MessagesUtil.getInstance().get("schedule_msg_saved_success"));
+		} catch(ApiServiceException e) {
+			attributes.addFlashAttribute("apiErrors", e.getErrors());
+			attributes.addFlashAttribute("schedule", schedule);
+		}
 		return mv;
 		
 	}	

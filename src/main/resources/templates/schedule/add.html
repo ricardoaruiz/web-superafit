@@ -14,13 +14,19 @@
 			
 				<br/>
 				<div>
-					<div class="alert alert-success" th:text="${mensagem}" 
-						th:if="${not #strings.isEmpty(mensagem)}">
-					</div>		   
-				   
-				   	<div id="erros" class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+					<div class="alert alert-success" th:text="${success}" 
+						th:if="${not #strings.isEmpty(success)}">
+					</div>	
+						   
+				   	<div id="validationErrors" class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
 						<ul th:each="detailedError : ${#fields.detailedErrors()}">
 							<li th:text="${detailedError.message}"></li>
+						</ul>
+					</div>					   
+				   
+				   	<div id="apiErrors" class="alert alert-danger" th:if="${apiErrors != null}">
+						<ul th:each="apiError : ${apiErrors.errors}">
+							<li th:text="${apiError.error}"></li>
 						</ul>
 					</div>
 				</div> 		

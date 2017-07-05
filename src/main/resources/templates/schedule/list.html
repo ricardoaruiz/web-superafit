@@ -10,40 +10,42 @@
 			  <h2>Horários<small> da semana</small></h2>
 			</div>
 
-			<div th:each="item : ${list.schedules}">
-				<br/>
-				<div class="chip">
-				  <i class="material-icons prefix">subtitles</i>
-				  <span th:text="${item.weekDay}">
-				  </span>
-				</div>				
-
-				<table class="bordered highlight centered">
-					<thead>
-					  <tr>
-					      <th>Início</th>
-					      <th>Término</th>
-					      <th>Ações</th>
-					  </tr>
-					</thead>					
-					<tbody>
-					  <tr th:each="daySchedule : ${item.daySchedules}">
-					    <td> 
-					        <i class="material-icons prefix">query_builder</i>
-					    	<span th:text="${daySchedule.scheduleStart}"></span> 
-					    </td>
-					    <td>
-					    	<i class="material-icons prefix">query_builder</i> 
-					    	<span th:text="${daySchedule.scheduleEnd}"></span> 
-					    </td>
-					    <td> 
-					    	<i class="material-icons sf-link">mode_edit</i>
-					    	<i class="material-icons sf-link">delete</i>
-					    </td>
-					    
-					  </tr>
-					</tbody>
-				</table>			
+			<div th:if="${list != null}">
+				<div th:each="item : ${list.schedules}">
+					<br/>
+					<div class="chip">
+					  <i class="material-icons prefix">subtitles</i>
+					  <span th:text="${item.weekDay}">
+					  </span>
+					</div>				
+	
+					<table class="bordered highlight centered">
+						<thead>
+						  <tr>
+						      <th>Início</th>
+						      <th>Término</th>
+						      <th>Ações</th>
+						  </tr>
+						</thead>					
+						<tbody>
+						  <tr th:each="daySchedule : ${item.daySchedules}">
+						    <td> 
+						        <i class="material-icons prefix">query_builder</i>
+						    	<span th:text="${daySchedule.scheduleStart}"></span> 
+						    </td>
+						    <td>
+						    	<i class="material-icons prefix">query_builder</i> 
+						    	<span th:text="${daySchedule.scheduleEnd}"></span> 
+						    </td>
+						    <td> 
+						    	<i class="material-icons sf-link">mode_edit</i>
+						    	<i class="material-icons sf-link">delete</i>
+						    </td>
+						    
+						  </tr>
+						</tbody>
+					</table>			
+				</div>
 			</div>
 			
 		</div>
