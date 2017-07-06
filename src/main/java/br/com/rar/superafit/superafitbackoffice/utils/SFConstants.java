@@ -8,6 +8,11 @@ public interface SFConstants {
 		 * Chave para export mensagens de sucesso para a view
 		 */
 		public static final String SUCCESS = "success";
+
+		/**
+		 * Chave para export mensagens de informação para a view
+		 */
+		public static final String INFORMATION = "information";
 		
 		/**
 		 * Chave para expor mensagens de erro de api para a view

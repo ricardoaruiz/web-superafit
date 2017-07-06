@@ -37,8 +37,15 @@ public class ScheduleController {
 		ModelAndView mav = new ModelAndView("schedule/list");
 		try {
 			ListScheduleResponse list = scheduleService.list();			
-			mav.addObject("list", list);
+						
+			if(list == null || list.getSchedules() == null && list.getSchedules().isEmpty()) {
+				mav.addObject(SFConstants.ExportViewValuesKey.INFORMATION, MessageEnum.SCHEDULE_MSG_NOT_FOUND.getMsg());
+			} else {			
+				mav.addObject(SFConstants.ExportViewValuesKey.INFORMATION, list.isSync() ? null : MessageEnum.SCHEDULE_MSG_REMIDER_PUBLISH.getMsg());
+			}
+			
 			LOG.info("Horários listados com sucesso.");
+			mav.addObject("list", list);
 		} catch(ApiServiceException e) {
 			LOG.error("Erro ao consultar os horários");
 			mav.addObject(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
@@ -74,7 +81,7 @@ public class ScheduleController {
 	}	
 	
 	@RequestMapping(value="delete", method=RequestMethod.POST)
-	public ModelAndView save(Schedule schedule, RedirectAttributes attributes) {
+	public ModelAndView delete(Schedule schedule, RedirectAttributes attributes) {
 		
 		ModelAndView mv = new ModelAndView("redirect:/schedule");
 		try {
@@ -92,6 +99,7 @@ public class ScheduleController {
 		ModelAndView mv = new ModelAndView("redirect:/schedule");
 		try {
 			scheduleService.notification();
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.SCHEDULE_MSG_PUBLISHED.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
 		}

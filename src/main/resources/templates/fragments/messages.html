@@ -4,6 +4,10 @@
 	<div class="sf-alert sf-alert-success" th:text="${success}" 
 		th:if="${not #strings.isEmpty(success)}">
 	</div>	
+	
+	<div class="sf-alert sf-alert-warning" th:text="${information}" 
+		th:if="${not #strings.isEmpty(information)}">
+	</div>	
 		   
    	<div id="apiErrors" class="sf-alert sf-alert-danger" th:if="${apiErrors != null}">
 		<ul th:each="apiError : ${apiErrors.errors}">

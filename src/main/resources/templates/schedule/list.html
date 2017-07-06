@@ -57,7 +57,7 @@
 		    <i class="large material-icons">menu</i>
 		  </a>
 		  <ul>
-		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Publicar horário" href="#" onclick="notification();"><i class="material-icons">phonelink_ring</i></a></li>
+		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Publicar horário" href="#" onclick="notification();" th:classappend="${list != null and list.sync} ? disabled"><i class="material-icons">phonelink_ring</i></a></li>
 		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Atualizar" href="schedule"><i class="material-icons">replay</i></a></li>
 		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Adicionar" href="schedule/add"><i class="material-icons">add</i></a></li>
 		  </ul>

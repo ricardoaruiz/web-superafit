@@ -12,9 +12,15 @@
 }
 
 .sf-alert-danger {
-  color: #ffffff;
-  background-color: #ffab40;
+  color: #a94442;
+  background-color: #f2dede;
   border-color: #ebccd1;
+}
+
+.sf-alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
 }
 
 .sf-link {

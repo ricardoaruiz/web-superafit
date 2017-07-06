@@ -10,7 +10,10 @@ public enum MessageEnum {
 	//Schedule
 	SCHEDULE_REQUIRED_WEEK_DAY(MessageConstants.SCHEDULE_REQUIRED_WEEK_DAY),
 	SCHEDULE_MSG_SAVED_SUCCESS(MessageConstants.SCHEDULE_MSG_SAVED_SUCCESS),
-	SCHEDULE_MSG_REMOVED_SUCCESS(MessageConstants.SCHEDULE_MSG_REMOVED_SUCCESS); 
+	SCHEDULE_MSG_REMOVED_SUCCESS(MessageConstants.SCHEDULE_MSG_REMOVED_SUCCESS),
+	SCHEDULE_MSG_REMIDER_PUBLISH(MessageConstants.SCHEDULE_MSG_REMIDER_PUBLISH), 
+	SCHEDULE_MSG_PUBLISHED(MessageConstants.SCHEDULE_MSG_PUBLISHED), 
+	SCHEDULE_MSG_NOT_FOUND(MessageConstants.SCHEDULE_MSG_NOT_FOUND),; 
 	
 	
 	private final String msg;
@@ -36,6 +39,9 @@ public enum MessageEnum {
 		public static final String SCHEDULE_REQUIRED_SCHEDULE_END = "schedule_required_schedule_end";
 		public static final String SCHEDULE_MSG_SAVED_SUCCESS = "schedule_msg_saved_success";
 		public static final String SCHEDULE_MSG_REMOVED_SUCCESS = "schedule_msg_removed_success";
+		public static final String SCHEDULE_MSG_REMIDER_PUBLISH = "schedule_msg_reminder_publish";
+		public static final String SCHEDULE_MSG_PUBLISHED = "schedule_msg_published";
+		public static final String SCHEDULE_MSG_NOT_FOUND = "schedule_msg_not_found";
 		
 	}
 	
