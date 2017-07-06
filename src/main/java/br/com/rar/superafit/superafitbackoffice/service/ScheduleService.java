@@ -78,6 +78,24 @@ public class ScheduleService {
 			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());			
 		}
 	}
+	
+	public void notification() {
+		try {
+			Call<Void> call = webServiceClient.getScheduleWebService().notification();
+			Response<Void> response = call.execute();
+			
+			LOG.info("Notificação de horários http-status: " + response.code());
+			if(!response.isSuccessful()) {
+				String bodyError = response.errorBody().string();
+				LOG.info("Notificação de horários body-error: " + bodyError);
+				throw new ApiServiceException(response.code(), bodyError);
+			}			
+			
+		} catch (IOException e) {
+			LOG.error("Erro ao notificar os horários", e);
+			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
+		}
+	}
 
 	private CreateScheduleRequest getCreateScheduleRequest(Schedule schedule) {
 		CreateScheduleRequest request = new CreateScheduleRequest();

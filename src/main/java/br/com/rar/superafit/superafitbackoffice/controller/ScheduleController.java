@@ -18,6 +18,7 @@ import br.com.rar.superafit.superafitbackoffice.model.ListScheduleResponse;
 import br.com.rar.superafit.superafitbackoffice.service.ScheduleService;
 import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
 import br.com.rar.superafit.superafitbackoffice.utils.MessageEnum;
+import br.com.rar.superafit.superafitbackoffice.utils.SFConstants;
 
 @Controller
 @RequestMapping("schedule")
@@ -40,7 +41,7 @@ public class ScheduleController {
 			LOG.info("Horários listados com sucesso.");
 		} catch(ApiServiceException e) {
 			LOG.error("Erro ao consultar os horários");
-			mav.addObject("apiErrors", e.getErrors());
+			mav.addObject(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
 		}
 		return mav;
 	}
@@ -63,9 +64,9 @@ public class ScheduleController {
 		ModelAndView mv = new ModelAndView("redirect:/schedule/add");
 		try {
 			scheduleService.create(schedule);			
-			attributes.addFlashAttribute("success", MessageEnum.SCHEDULE_MSG_SAVED_SUCCESS.getMsg());
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.SCHEDULE_MSG_SAVED_SUCCESS.getMsg());
 		} catch(ApiServiceException e) {
-			attributes.addFlashAttribute("apiErrors", e.getErrors());
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
 			attributes.addFlashAttribute("schedule", schedule);
 		}
 		return mv;
@@ -78,13 +79,23 @@ public class ScheduleController {
 		ModelAndView mv = new ModelAndView("redirect:/schedule");
 		try {
 			scheduleService.remove(schedule);			
-			attributes.addFlashAttribute("success", MessageEnum.SCHEDULE_MSG_REMOVED_SUCCESS.getMsg());
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.SCHEDULE_MSG_REMOVED_SUCCESS.getMsg());
 		} catch(ApiServiceException e) {
-			attributes.addFlashAttribute("apiErrors", e.getErrors());
-			attributes.addFlashAttribute("schedule", schedule);
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
 		}
 		return mv;
 		
-	}	
+	}
+
+	@RequestMapping(value="notification", method=RequestMethod.POST)
+	public ModelAndView notification(RedirectAttributes attributes) {
+		ModelAndView mv = new ModelAndView("redirect:/schedule");
+		try {
+			scheduleService.notification();
+		} catch(ApiServiceException e) {
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+		}
+		return mv;
+	}
 	
 }

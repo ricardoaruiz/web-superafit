@@ -20,4 +20,7 @@ public interface ScheduleWebService {
 	@HTTP(method = "DELETE", path = "schedule", hasBody = true)
 	Call<Void> remove(@Body RemoveScheduleRequest request);
 	
+	@POST("schedule/notification")
+	Call<Void> notification();
+	
 }

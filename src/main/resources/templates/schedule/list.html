@@ -40,9 +40,8 @@
 						    	<span th:text="${daySchedule.scheduleEnd}"></span> 
 						    </td>
 						    <td> 
-						    	<i class="material-icons sf-link">mode_edit</i>
 						    	<i class="material-icons sf-link"  
-						    	th:onclick="'javascript:remover(\'' + ${item.indexWeekDay} + '\,' + ${daySchedule.scheduleStart} + '\' );'">delete</i>
+						    		th:onclick="'javascript:remover(\'' + ${item.indexWeekDay} + '\,' + ${daySchedule.scheduleStart} + '\' );'">delete</i>
 						    </td>
 						    
 						  </tr>
@@ -58,7 +57,7 @@
 		    <i class="large material-icons">menu</i>
 		  </a>
 		  <ul>
-		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Publicar horário"><i class="material-icons">phonelink_ring</i></a></li>
+		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Publicar horário" href="#" onclick="notification();"><i class="material-icons">phonelink_ring</i></a></li>
 		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Atualizar" href="schedule"><i class="material-icons">replay</i></a></li>
 		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Adicionar" href="schedule/add"><i class="material-icons">add</i></a></li>
 		  </ul>
@@ -68,9 +67,11 @@
 			<input type="hidden" id="weekDay" name="weekDay"/>
 			<input type="hidden" id="scheduleStart" name="scheduleStart"/>
 		</form>
+		
+		<form id="formNotification" action="schedule/notification" method="POST"></form>
 	
-		<!-- Modal Structure -->
-		<div id="modal1" class="modal">
+		<!-- Remove Modal -->
+		<div id="removeModal" class="modal">
 		  <div class="modal-content">
 		    <h4>Remover horário</h4>
 		    <p><h5>Deseja realmente remover o horário selecionado?</h5></p>
@@ -78,6 +79,18 @@
 		  <div class="modal-footer">
 		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Não</a>
 		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" onclick="confirmaRemover()">Sim</a>
+		  </div>
+		</div>
+		
+		<!-- Notification Modal -->
+		<div id="notificationModal" class="modal">
+		  <div class="modal-content">
+		    <h4>Notificar horários</h4>
+		    <p><h5>Deseja realmente enviar os horários para o aplicativo mobile?</h5></p>
+		  </div>
+		  <div class="modal-footer">
+		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Não</a>
+		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" onclick="confirmNotification()">Sim</a>
 		  </div>
 		</div>		
 		
@@ -88,9 +101,15 @@ function remover(args) {
 	var valores = args.split(',')
 	$('#weekDay').val(valores[0]);
 	$('#scheduleStart').val(valores[1]);
-	$('#modal1').modal('open');
+	$('#removeModal').modal('open');
 }
 function confirmaRemover() {
 	$('#formDelete').submit();
+}
+function notification() {
+	$('#notificationModal').modal('open');
+}
+function confirmNotification() {
+	$('#formNotification').submit();
 }
 </script>
