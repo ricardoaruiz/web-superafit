@@ -21,12 +21,9 @@
 					  <i class="material-icons prefix">subtitles</i>
 					  <select id="weekDay" name="weekDay" th:field="*{weekDay}" class="invalid">
 					    <option value="" disabled="true" selected="true">Selecione o dia da semana</option>
-					    <option value="1">Segunda-feira</option>
-					    <option value="2">Terça-feira</option>
-					    <option value="3">Quarta-feira</option>
-					    <option value="4">Quinta-feira</option>
-					    <option value="5">Sexta-feira</option>
-					    <option value="6">Sábado</option>
+					    <option th:each="weekDay : ${weekDays}" 
+					    		th:value="${weekDay.index}"
+					    		th:text="${weekDay.description}"></option>
 					  </select>
 					  <label>Dia da semana</label>
 					</div>

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.rar.superafit.superafitbackoffice.controller.model.Schedule;
+import br.com.rar.superafit.superafitbackoffice.enumeration.WeekDayEnum;
 import br.com.rar.superafit.superafitbackoffice.model.ListScheduleResponse;
 import br.com.rar.superafit.superafitbackoffice.service.ScheduleService;
 import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
@@ -47,6 +48,7 @@ public class ScheduleController {
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public ModelAndView add(Schedule schedule) {
 		ModelAndView mav = new ModelAndView("schedule/add");
+		mav.addObject("weekDays", WeekDayEnum.values());
 		return mav;
 	}
 	
@@ -62,6 +64,21 @@ public class ScheduleController {
 		try {
 			scheduleService.create(schedule);			
 			attributes.addFlashAttribute("success", MessageEnum.SCHEDULE_MSG_SAVED_SUCCESS.getMsg());
+		} catch(ApiServiceException e) {
+			attributes.addFlashAttribute("apiErrors", e.getErrors());
+			attributes.addFlashAttribute("schedule", schedule);
+		}
+		return mv;
+		
+	}	
+	
+	@RequestMapping(value="delete", method=RequestMethod.POST)
+	public ModelAndView save(Schedule schedule, RedirectAttributes attributes) {
+		
+		ModelAndView mv = new ModelAndView("redirect:/schedule");
+		try {
+			scheduleService.remove(schedule);			
+			attributes.addFlashAttribute("success", MessageEnum.SCHEDULE_MSG_REMOVED_SUCCESS.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute("apiErrors", e.getErrors());
 			attributes.addFlashAttribute("schedule", schedule);

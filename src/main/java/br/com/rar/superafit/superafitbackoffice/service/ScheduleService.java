@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.rar.superafit.superafitbackoffice.controller.model.Schedule;
 import br.com.rar.superafit.superafitbackoffice.model.CreateScheduleRequest;
 import br.com.rar.superafit.superafitbackoffice.model.ListScheduleResponse;
+import br.com.rar.superafit.superafitbackoffice.model.RemoveScheduleRequest;
 import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
 import br.com.rar.superafit.superafitbackoffice.utils.MessageEnum;
 import br.com.rar.superafit.superafitbackoffice.webservice.WebServiceClient;
@@ -31,8 +32,9 @@ public class ScheduleService {
 			
 			LOG.info("Consulta horários http-status: " + response.code());
 			if(!response.isSuccessful()) {
-				LOG.info("Consulta horários body-error: " + response.errorBody().string());
-				throw new ApiServiceException(response);
+				String bodyError = response.errorBody().string();
+				LOG.info("Consulta horários body-error: " + bodyError);
+				throw new ApiServiceException(response.code(), bodyError);
 			}
 			
 			return response.body();
@@ -49,13 +51,32 @@ public class ScheduleService {
 			
 			LOG.info("Criar horário http-status: " + response.code());
 			if(!response.isSuccessful()) {
-				LOG.info("Criar horário body-error: " + response.errorBody().string());
-				throw new ApiServiceException(response);
+				String bodyError = response.errorBody().string();
+				LOG.info("Criar horário body-error: " + bodyError);
+				throw new ApiServiceException(response.code(), bodyError);
 			}			
 		} catch (IOException e) {
 			LOG.error("Erro ao criar horário", e);
 			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
 		}		
+	}
+	
+	public void remove(Schedule schedule) {
+		try {
+			Call<Void> call = webServiceClient.getScheduleWebService().remove(getRemoveScheduleRequest(schedule));
+			Response<Void> response = call.execute();
+			
+			LOG.info("Remover horário http-status: " + response.code());
+			if(!response.isSuccessful()) {
+				String bodyError = response.errorBody().string();
+				LOG.info("Remover horário body-error: " + bodyError);
+				throw new ApiServiceException(response.code(), bodyError);
+			}
+			
+		} catch(IOException e) {
+			LOG.error("Erro ao criar horário", e);
+			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());			
+		}
 	}
 
 	private CreateScheduleRequest getCreateScheduleRequest(Schedule schedule) {
@@ -65,5 +86,8 @@ public class ScheduleService {
 		request.setScheduleEnd(schedule.getScheduleEnd());
 		return request;
 	}
-	
+
+	private RemoveScheduleRequest getRemoveScheduleRequest(Schedule schedule) {
+		return new RemoveScheduleRequest(schedule.getWeekDay(), schedule.getScheduleStart());
+	}
 }

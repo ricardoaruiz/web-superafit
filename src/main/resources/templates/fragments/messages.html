@@ -1,11 +1,11 @@
 <div lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
             
-	<div class="alert alert-success" th:text="${success}" 
+	<div class="sf-alert sf-alert-success" th:text="${success}" 
 		th:if="${not #strings.isEmpty(success)}">
 	</div>	
 		   
-   	<div id="apiErrors" class="alert alert-danger" th:if="${apiErrors != null}">
+   	<div id="apiErrors" class="sf-alert sf-alert-danger" th:if="${apiErrors != null}">
 		<ul th:each="apiError : ${apiErrors.errors}">
 			<li th:text="${apiError.error}"></li>
 		</ul>

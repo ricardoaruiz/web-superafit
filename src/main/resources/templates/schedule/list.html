@@ -41,7 +41,8 @@
 						    </td>
 						    <td> 
 						    	<i class="material-icons sf-link">mode_edit</i>
-						    	<i class="material-icons sf-link">delete</i>
+						    	<i class="material-icons sf-link"  
+						    	th:onclick="'javascript:remover(\'' + ${item.indexWeekDay} + '\,' + ${daySchedule.scheduleStart} + '\' );'">delete</i>
 						    </td>
 						    
 						  </tr>
@@ -61,15 +62,35 @@
 		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Atualizar" href="schedule"><i class="material-icons">replay</i></a></li>
 		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Adicionar" href="schedule/add"><i class="material-icons">add</i></a></li>
 		  </ul>
-		</div>			
-				
+		</div>
+		
+		<form id="formDelete" action="schedule/delete" method="POST" th:object="${schedule}">
+			<input type="hidden" id="weekDay" name="weekDay"/>
+			<input type="hidden" id="scheduleStart" name="scheduleStart"/>
+		</form>
+	
+		<!-- Modal Structure -->
+		<div id="modal1" class="modal">
+		  <div class="modal-content">
+		    <h4>Remover horário</h4>
+		    <p><h5>Deseja realmente remover o horário selecionado?</h5></p>
+		  </div>
+		  <div class="modal-footer">
+		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Não</a>
+		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" onclick="confirmaRemover()">Sim</a>
+		  </div>
+		</div>		
+		
 	</th:block>
-
 </html>
 <script>
-$( document ).ready(function(){	
-	$('.sf-link').click(function() {
-		Materialize.toast('I am a toast!', 4000)
-	});	
-})
+function remover(args) {
+	var valores = args.split(',')
+	$('#weekDay').val(valores[0]);
+	$('#scheduleStart').val(valores[1]);
+	$('#modal1').modal('open');
+}
+function confirmaRemover() {
+	$('#formDelete').submit();
+}
 </script>
