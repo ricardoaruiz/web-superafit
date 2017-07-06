@@ -12,7 +12,9 @@
 
 			<form id="addSchedule" action="add" method="POST" class="col s12" th:object="${schedule}">
 			
+				<br/>
 				<th:block layout:replace="fragments/form-messages"/>
+				<br/>
 			
 				<div class="row">
 					<div class="input-field col s12" th:classappend="${#fields.hasErrors('weekDay')} ? invalid">
@@ -46,6 +48,8 @@
 			     
 			</form>
 	
+			<br/><br/><br/>
+	
 			<div class="fixed-action-btn horizontal">
 			  <a class="btn-floating btn-large tooltipped tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Ações">
 			    <i class="large material-icons">menu</i>
@@ -65,7 +69,6 @@
 <script>
 $(document).ready(function() {
 	$('select').material_select();
-	
 	
 	$('.timepicker').pickatime({
 		default: 'now', // Set default time
