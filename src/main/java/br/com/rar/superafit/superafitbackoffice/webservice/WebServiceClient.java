@@ -38,5 +38,13 @@ public class WebServiceClient {
 	public ScheduleWebService getScheduleWebService() {
 		return retrofit.create(ScheduleWebService.class);
 	}
+
+	public TrainningTypeWebService getTrainningTypeService() {
+		return retrofit.create(TrainningTypeWebService.class);
+	}
+	
+	public MovementWebService getMovementWebService() {
+		return retrofit.create(MovementWebService.class);
+	}
 	
 }
