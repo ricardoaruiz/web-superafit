@@ -1,11 +1,11 @@
 <div lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
             
-	<div class="sf-alert sf-alert-success" th:text="${success}" 
+	<div id="alertSuccess" class="sf-alert sf-alert-success" th:text="${success}" 
 		th:if="${not #strings.isEmpty(success)}">
 	</div>	
 	
-	<div class="sf-alert sf-alert-warning" th:text="${information}" 
+	<div id="alertWarning" class="sf-alert sf-alert-warning" th:text="${information}" 
 		th:if="${not #strings.isEmpty(information)}">
 	</div>	
 		   
@@ -15,3 +15,8 @@
 		</ul>
 	</div>
 </div> 
+<script>
+setTimeout(function(){
+    $('#alertSuccess').fadeOut("slow");
+}, 4000);
+</script>
