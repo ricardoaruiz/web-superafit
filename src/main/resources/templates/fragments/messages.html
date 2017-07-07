@@ -1,17 +1,24 @@
 <div lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
             
-	<div id="alertSuccess" class="sf-alert sf-alert-success" th:text="${success}" 
+	<div id="alertSuccess" class="sf-alert sf-alert-success z-depth-1" 
 		th:if="${not #strings.isEmpty(success)}">
+		<span><i class="material-icons prefix">check</i></span>
+		<span th:text="${success}"></span>
 	</div>	
 	
-	<div id="alertWarning" class="sf-alert sf-alert-warning" th:text="${information}" 
+	<div id="alertWarning" class="sf-alert sf-alert-warning z-depth-1" 
 		th:if="${not #strings.isEmpty(information)}">
+		<span><i class="material-icons prefix">add_alert</i></span>
+		<span th:text="${information}"></span>
 	</div>	
 		   
-   	<div id="apiErrors" class="sf-alert sf-alert-danger" th:if="${apiErrors != null}">
+   	<div id="apiErrors" class="sf-alert sf-alert-danger z-depth-1" th:if="${apiErrors != null}">
 		<ul th:each="apiError : ${apiErrors.errors}">
-			<li th:text="${apiError.error}"></li>
+			<li>
+				<span><i class="material-icons prefix">error</i></span>
+				<span th:text="${apiError.error}"></span>
+			</li>
 		</ul>
 	</div>
 </div> 

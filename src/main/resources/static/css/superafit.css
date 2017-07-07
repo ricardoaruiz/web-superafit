@@ -1,5 +1,7 @@
 .sf-alert {
-  padding: 15px;
+  padding-top : 1px;
+  padding-bottom: 1px;
+  padding-left: 10px;
   margin-bottom: 0px;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -11,17 +13,18 @@
   border-color: #d6e9c6;
 }
 
+.sf-alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+
 .sf-alert-danger {
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
 }
 
-.sf-alert-warning {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
-}
 
 .sf-link {
 	cursor: pointer;
