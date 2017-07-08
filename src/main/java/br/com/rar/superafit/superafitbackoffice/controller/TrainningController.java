@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.rar.superafit.superafitbackoffice.controller.model.Trainning;
 import br.com.rar.superafit.superafitbackoffice.model.ListMovementResponse;
+import br.com.rar.superafit.superafitbackoffice.model.ListTrainningResponse;
 import br.com.rar.superafit.superafitbackoffice.model.TrainningTypeResponse;
 import br.com.rar.superafit.superafitbackoffice.service.MovementService;
 import br.com.rar.superafit.superafitbackoffice.service.TrainningService;
@@ -39,8 +40,23 @@ public class TrainningController {
 	@Autowired
 	private MovementService movementService;
 	
+	@RequestMapping(method=RequestMethod.GET)
+	public ModelAndView list() {
+		ModelAndView mv = new ModelAndView("trainning/list");		
+		try{
+			LOG.info("Recuperando o treino diário");
+			ListTrainningResponse trainning = trainningService.list();		
+			mv.addObject("list", trainning);
+			LOG.info("Treino diário recuperado com sucesso.");
+		} catch(ApiServiceException e) {
+			LOG.error("Erro ao consultar o treino diário");
+			mv.addObject(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+		}		
+		return mv;
+	}
+	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
-	private ModelAndView add(Trainning trainning) {
+	public ModelAndView add(Trainning trainning) {
 		ModelAndView mv = new ModelAndView("trainning/add");
 		
 		List<TrainningTypeResponse> trainningTypes = trainningTypeService.findAllTrainningType();

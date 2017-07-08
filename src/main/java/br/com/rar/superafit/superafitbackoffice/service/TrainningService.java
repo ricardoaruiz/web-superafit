@@ -2,6 +2,7 @@ package br.com.rar.superafit.superafitbackoffice.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import br.com.rar.superafit.superafitbackoffice.controller.model.Trainning;
 import br.com.rar.superafit.superafitbackoffice.model.CreateTrainningRequest;
+import br.com.rar.superafit.superafitbackoffice.model.ListTrainningResponse;
 import br.com.rar.superafit.superafitbackoffice.model.MovementRequest;
 import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
+import br.com.rar.superafit.superafitbackoffice.utils.DateFormatUtil;
 import br.com.rar.superafit.superafitbackoffice.utils.MessageEnum;
 import br.com.rar.superafit.superafitbackoffice.webservice.WebServiceClient;
 import retrofit2.Call;
@@ -25,6 +28,28 @@ public class TrainningService {
 
 	@Autowired
 	private WebServiceClient webServiceClient;
+
+	public ListTrainningResponse list() {
+		
+		try {
+			Call<ListTrainningResponse> call = webServiceClient.getTrainningService().getTrainning(
+					DateFormatUtil.toString(new Date(), DateFormatUtil.Format.DIA_MES_ANO));
+		
+			Response<ListTrainningResponse> response = call.execute();
+			
+			LOG.info("Listagem do treino diário http-status: " + response.code());
+			if(!response.isSuccessful()) {
+				String bodyError = response.errorBody().string();
+				LOG.info("Listagem do treino diário body-error: " + bodyError);
+				throw new ApiServiceException(response.code(), bodyError);				
+			}
+		
+			return response.body();
+		} catch (IOException e) {
+			LOG.error("Erro ao criar treino diário", e);
+			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
+		}
+	}
 	
 	public void save(Trainning trainning) {
 		try {
@@ -70,4 +95,5 @@ public class TrainningService {
 		
 		return toReturn;
 	}
+
 }

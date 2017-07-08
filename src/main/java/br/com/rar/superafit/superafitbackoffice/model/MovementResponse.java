@@ -2,9 +2,12 @@ package br.com.rar.superafit.superafitbackoffice.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class MovementResponse implements Serializable{
 
-	private static final long serialVersionUID = 6429132972615390508L;
+	private static final long serialVersionUID = 8820488516302539321L;
 
 	private String id;
 	
@@ -13,6 +16,8 @@ public class MovementResponse implements Serializable{
 	private String translate;
 	
 	private String description;
+	
+	private String qtRep;
 
 	public String getId() {
 		return id;
@@ -45,5 +50,12 @@ public class MovementResponse implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	public String getQtRep() {
+		return qtRep;
+	}
+
+	public void setQtRep(String qtRep) {
+		this.qtRep = qtRep;
+	}
 }
