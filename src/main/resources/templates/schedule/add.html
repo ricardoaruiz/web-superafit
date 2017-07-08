@@ -14,33 +14,42 @@
 			
 				<th:block layout:replace="fragments/messages-form"/>
 				<br/>
-			
+
 				<div class="row">
-					<div class="input-field col s12" th:classappend="${#fields.hasErrors('weekDay')} ? invalid">
-					  <i class="material-icons prefix">subtitles</i>
-					  <select id="weekDay" name="weekDay" th:field="*{weekDay}" class="invalid">
-					    <option value="" disabled="true" selected="true">Selecione o dia da semana</option>
-					    <option th:each="weekDay : ${weekDays}" 
-					    		th:value="${weekDay.index}"
-					    		th:text="${weekDay.description}"></option>
-					  </select>
-					  <label>Dia da semana</label>
+			        <div class="col s12 m6 l12">
+			          <div class="card">
+			            <div class="card-content">			
+								<div class="row">
+									<div class="input-field col s12" th:classappend="${#fields.hasErrors('weekDay')} ? invalid">
+									  <i class="material-icons prefix">subtitles</i>
+									  <select id="weekDay" name="weekDay" th:field="*{weekDay}" class="invalid">
+									    <option value="" disabled="true" selected="true">Selecione o dia da semana</option>
+									    <option th:each="weekDay : ${weekDays}" 
+									    		th:value="${weekDay.index}"
+									    		th:text="${weekDay.description}"></option>
+									  </select>
+									  <label>Dia da semana</label>
+									</div>
+								</div>			
+										
+								<div class="row">			       
+							       <div class="input-field col s12 m6 l6">
+							          <i class="material-icons prefix">query_builder</i>
+							          <input id="scheduleStart" name="scheduleStart" type="text" class="timepicker" th:field="*{scheduleStart}" th:classappend="${#fields.hasErrors('scheduleStart')} ? invalid"/>
+							          <label for="scheduleStart">Hora Início</label>
+							       </div>
+							       
+							       <div class="input-field col s12 m6 l6">
+							       	  <i class="material-icons prefix">query_builder</i>
+							          <input id="scheduleEnd" name="scheduleEnd" type="text" class="timepicker" th:field="*{scheduleEnd}" th:classappend="${#fields.hasErrors('scheduleEnd')} ? invalid"/>
+							          <label for="scheduleEnd">Hora Fim</label>
+							       </div>
+							       
+							     </div>						    
+							 </div>
+						</div>
 					</div>
-				</div>			
-						
-				<div class="row">			       
-			       <div class="input-field col s12 m6 l6">
-			          <i class="material-icons prefix">query_builder</i>
-			          <input id="scheduleStart" name="scheduleStart" type="text" class="timepicker" th:field="*{scheduleStart}" th:classappend="${#fields.hasErrors('scheduleStart')} ? invalid"/>
-			          <label for="scheduleStart">Hora Início</label>
-			       </div>
-			       
-			       <div class="input-field col s12 m6 l6">
-			       	  <i class="material-icons prefix">query_builder</i>
-			          <input id="scheduleEnd" name="scheduleEnd" type="text" class="timepicker" th:field="*{scheduleEnd}" th:classappend="${#fields.hasErrors('scheduleEnd')} ? invalid"/>
-			          <label for="scheduleEnd">Hora Fim</label>
-			       </div>
-			     </div>
+				</div>
 			     
 			</form>
 	
