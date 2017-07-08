@@ -18,13 +18,20 @@ import br.com.rar.superafit.superafitbackoffice.controller.model.Trainning;
 import br.com.rar.superafit.superafitbackoffice.model.ListMovementResponse;
 import br.com.rar.superafit.superafitbackoffice.model.TrainningTypeResponse;
 import br.com.rar.superafit.superafitbackoffice.service.MovementService;
+import br.com.rar.superafit.superafitbackoffice.service.TrainningService;
 import br.com.rar.superafit.superafitbackoffice.service.TrainningTypeService;
+import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
+import br.com.rar.superafit.superafitbackoffice.utils.MessageEnum;
+import br.com.rar.superafit.superafitbackoffice.utils.SFConstants;
 
 @Controller
 @RequestMapping("trainning")
 public class TrainningController {
 
 	private final Logger LOG = LoggerFactory.getLogger(TrainningController.class);
+	
+	@Autowired
+	private TrainningService trainningService;
 	
 	@Autowired
 	private TrainningTypeService trainningTypeService;
@@ -52,7 +59,15 @@ public class TrainningController {
 		if (result.hasErrors()) {
 			return add(trainning);
 		}
+		
 		ModelAndView mv = new ModelAndView("redirect:/trainning/add");
+		try{
+			trainningService.save(trainning);
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.CREATE_TRAINNING_SUCCESS.getMsg());
+		} catch(ApiServiceException e) {
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+			attributes.addFlashAttribute("trainning", trainning);
+		}		
 		return mv;
 	}
 	

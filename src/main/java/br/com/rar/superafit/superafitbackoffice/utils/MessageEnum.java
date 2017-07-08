@@ -13,7 +13,8 @@ public enum MessageEnum {
 	SCHEDULE_MSG_REMOVED_SUCCESS(MessageConstants.SCHEDULE_MSG_REMOVED_SUCCESS),
 	SCHEDULE_MSG_REMIDER_PUBLISH(MessageConstants.SCHEDULE_MSG_REMIDER_PUBLISH), 
 	SCHEDULE_MSG_PUBLISHED(MessageConstants.SCHEDULE_MSG_PUBLISHED), 
-	SCHEDULE_MSG_NOT_FOUND(MessageConstants.SCHEDULE_MSG_NOT_FOUND),; 
+	SCHEDULE_MSG_NOT_FOUND(MessageConstants.SCHEDULE_MSG_NOT_FOUND), 
+	CREATE_TRAINNING_SUCCESS(MessageConstants.CREATE_TRAINNING_SUCCESS); 
 	
 	
 	private final String msg;
@@ -42,6 +43,9 @@ public enum MessageEnum {
 		public static final String SCHEDULE_MSG_REMIDER_PUBLISH = "schedule_msg_reminder_publish";
 		public static final String SCHEDULE_MSG_PUBLISHED = "schedule_msg_published";
 		public static final String SCHEDULE_MSG_NOT_FOUND = "schedule_msg_not_found";
+		
+		//Trainning
+		public static final String CREATE_TRAINNING_SUCCESS = "create_trainning_success";
 		
 	}
 	

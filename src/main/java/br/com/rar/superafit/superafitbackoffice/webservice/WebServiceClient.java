@@ -46,5 +46,9 @@ public class WebServiceClient {
 	public MovementWebService getMovementWebService() {
 		return retrofit.create(MovementWebService.class);
 	}
+
+	public TrainningWebService getTrainningService() {
+		return retrofit.create(TrainningWebService.class);
+	}
 	
 }
