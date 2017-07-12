@@ -45,7 +45,14 @@ public class TrainningController {
 		ModelAndView mv = new ModelAndView("trainning/list");		
 		try{
 			LOG.info("Recuperando o treino diário");
-			ListTrainningResponse trainning = trainningService.list();		
+			ListTrainningResponse trainning = trainningService.list();
+			
+			if(trainning == null || trainning.getData() == null && trainning.getData().isEmpty()) {
+				mv.addObject(SFConstants.ExportViewValuesKey.INFORMATION, MessageEnum.TRAINNING_MSG_NOT_FOUND.getMsg());
+			} else {			
+				mv.addObject(SFConstants.ExportViewValuesKey.INFORMATION, trainning.isSync() ? null : MessageEnum.TRAINNING_MSG_REMIDER_PUBLISH.getMsg());
+			}
+			
 			mv.addObject("list", trainning);
 			LOG.info("Treino diário recuperado com sucesso.");
 		} catch(ApiServiceException e) {
