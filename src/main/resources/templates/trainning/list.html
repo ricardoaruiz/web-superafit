@@ -55,7 +55,9 @@
 			              				<i class="material-icons">edit</i>
 			              			</a>
 			              			<a class="btn-floating btn-small waves-effect waves-light #ff9100 orange accent-4">
-			              				<i class="material-icons">delete</i>
+			              				<i class="material-icons"
+			              					th:onclick="'javascript:remover(\'' + ${item.id} + '\');'">delete</i>		              				
+			              				
 			              			</a>			              			
 			            		</div>
 				              	
@@ -70,15 +72,61 @@
 		
 		<div class="fixed-action-btn horizontal">
 		  <a class="btn-floating btn-large tooltipped #ff9100 orange accent-4" 
-		  	data-position="top" data-delay="50" data-tooltip="Ações">
+		  	data-position="top" data-delay="50" data-tooltip="Ações"
+		  	th:classappend="${list != null and not list.sync} ? pulse">
 		    <i class="large material-icons">menu</i>
 		  </a>
 		  <ul>
-		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Publicar treino" href="#"><i class="material-icons">phonelink_ring</i></a></li>
+		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Publicar treino" href="#" onclick="notification();" th:classappend="${list != null and not list.sync} ? pulse"><i class="material-icons">phonelink_ring</i></a></li>
 		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Atualizar" href="trainning"><i class="material-icons">replay</i></a></li>
 		    <li><a class="btn-floating tooltipped waves-effect waves-light tooltipped #ff9100 orange accent-4" data-position="top" data-delay="50" data-tooltip="Adicionar" href="trainning/add"><i class="material-icons">add</i></a></li>
 		  </ul>
-		</div>					
+		</div>
+		
+		<form id="formRemover" action="trainning/delete" method="POST">
+			<input type="hidden" name="id" id="trainningIdRemover"/>
+		</form>
+		
+		<!-- Delete Modal -->
+		<div id="deleteModal" class="modal">
+		  <div class="modal-content">
+		    <h4>Remover treino</h4>
+		    <p><h5>Deseja realmente remover o treino selecionado?</h5></p>
+		  </div>
+		  <div class="modal-footer">
+		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Não</a>
+		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" onclick="confirmaRemover()">Sim</a>
+		  </div>
+		</div>
+		
+		<form id="formNotification" action="trainning/notification" method="POST"></form>
+		
+		<!-- Notification Modal -->
+		<div id="notificationModal" class="modal">
+		  <div class="modal-content">
+		    <h4>Notificar treino diário</h4>
+		    <p><h5>Deseja realmente enviar o treino diário para o aplicativo mobile?</h5></p>
+		  </div>
+		  <div class="modal-footer">
+		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Não</a>
+		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" onclick="confirmNotification()">Sim</a>
+		  </div>
+		</div>				
 		
 	</th:block>
 </html>
+<script>
+function remover(id) {
+	$('#deleteModal').modal('open');
+	$('#trainningIdRemover').val(id);
+}
+function confirmaRemover(id) {
+	$('#formRemover').submit();
+}
+function notification() {
+	$('#notificationModal').modal('open');
+}
+function confirmNotification() {
+	$('#formNotification').submit();
+}
+</script>

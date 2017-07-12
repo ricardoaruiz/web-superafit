@@ -69,6 +69,43 @@ public class TrainningService {
 		}
 	}
 	
+	public void delete(String id) {
+		try {
+			Call<Void> call = webServiceClient.getTrainningService().delete(id);
+			Response<Void> response = call.execute();
+			
+			LOG.info("Remoção de treino diário http-status: " + response.code());
+			if(!response.isSuccessful()) {
+				String bodyError = response.errorBody().string();
+				LOG.info("Remoção de treino diário body-error: " + bodyError);
+				throw new ApiServiceException(response.code(), bodyError);				
+			}
+			
+		} catch (IOException e) {
+			LOG.error("Erro ao remover treino diário", e);
+			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
+		}
+		
+	}
+	
+	public void notification() {
+		try {
+			Call<Void> call = webServiceClient.getTrainningService().notification();
+			Response<Void> response = call.execute();
+			
+			LOG.info("Notificação de treino diário http-status: " + response.code());
+			if(!response.isSuccessful()) {
+				String bodyError = response.errorBody().string();
+				LOG.info("Notificação de treino diário body-error: " + bodyError);
+				throw new ApiServiceException(response.code(), bodyError);
+			}			
+			
+		} catch (IOException e) {
+			LOG.error("Erro ao notificar o treino diário", e);
+			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
+		}
+	}	
+	
 	private CreateTrainningRequest getTrainningRequest(Trainning trainning) {
 		CreateTrainningRequest request = new CreateTrainningRequest();
 		

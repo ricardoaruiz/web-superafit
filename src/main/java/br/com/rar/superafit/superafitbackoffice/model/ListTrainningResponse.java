@@ -8,6 +8,8 @@ public class ListTrainningResponse implements Serializable {
 	private static final long serialVersionUID = -7886971407319567359L;
 	
 	private List<TrainningResponse> data;
+	
+	private boolean sync;
 
 	public List<TrainningResponse> getData() {
 		return data;
@@ -15,6 +17,14 @@ public class ListTrainningResponse implements Serializable {
 
 	public void setData(List<TrainningResponse> data) {
 		this.data = data;
+	}
+
+	public boolean isSync() {
+		return sync;
+	}
+
+	public void setSync(boolean sync) {
+		this.sync = sync;
 	}
 	
 }

@@ -87,4 +87,29 @@ public class TrainningController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public ModelAndView confirmDelete(Trainning trainning, RedirectAttributes attributes) {
+		ModelAndView mv = new ModelAndView("redirect:/trainning");
+		try{
+			trainningService.delete(trainning.getId());
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.DELETE_TRAINNING_SUCCESS.getMsg());
+		} catch(ApiServiceException e) {
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+			attributes.addFlashAttribute("trainning", trainning);
+		}
+		return mv;
+	}
+	
+	@RequestMapping(value="notification", method=RequestMethod.POST)
+	public ModelAndView notification(RedirectAttributes attributes) {
+		ModelAndView mv = new ModelAndView("redirect:/trainning");
+		try {
+			trainningService.notification();
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.TRAINNING_MSG_PUBLISHED.getMsg());
+		} catch(ApiServiceException e) {
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+		}
+		return mv;
+	}	
+	
 }
