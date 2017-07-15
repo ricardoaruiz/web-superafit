@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.rar.superafit.superafitbackoffice.controller.model.Trainning;
+import br.com.rar.superafit.superafitbackoffice.controller.model.TrainningRequest;
+import br.com.rar.superafit.superafitbackoffice.controller.model.TrainningResponse;
 import br.com.rar.superafit.superafitbackoffice.model.ListMovementResponse;
 import br.com.rar.superafit.superafitbackoffice.model.ListTrainningResponse;
 import br.com.rar.superafit.superafitbackoffice.model.TrainningTypeResponse;
@@ -63,7 +64,7 @@ public class TrainningController {
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
-	public ModelAndView add(Trainning trainning) {
+	public ModelAndView add(TrainningRequest trainningRequest) {
 		ModelAndView mv = new ModelAndView("trainning/add");
 		
 		List<TrainningTypeResponse> trainningTypes = trainningTypeService.findAllTrainningType();
@@ -76,7 +77,7 @@ public class TrainningController {
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public ModelAndView confirmAdd(@Valid Trainning trainning, BindingResult result
+	public ModelAndView confirmAdd(@Valid TrainningRequest trainning, BindingResult result
 			, RedirectAttributes attributes) {
 
 		if (result.hasErrors()) {
@@ -94,8 +95,46 @@ public class TrainningController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/update", method=RequestMethod.GET)
+	public ModelAndView update(TrainningRequest trainning, RedirectAttributes attributes) {
+		ModelAndView mv = new ModelAndView("trainning/update");
+		try{
+			br.com.rar.superafit.superafitbackoffice.model.TrainningResponse trainningResponse = trainningService.get(trainning.getId());
+			
+			List<TrainningTypeResponse> trainningTypes = trainningTypeService.findAllTrainningType();
+			mv.addObject("trainningTypes", trainningTypes);
+			
+			ListMovementResponse movements = movementService.findAll();
+			mv.addObject("movements", movements!= null ? movements.getMovements() : null);
+			
+			mv.addObject("trainning",new TrainningResponse(trainningResponse));
+		} catch(ApiServiceException e) {
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+			mv.setViewName("redirect:/trainning");		
+		}
+		return mv;
+	}
+	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public ModelAndView confirmUpdate(TrainningRequest trainning, BindingResult result, 
+			RedirectAttributes attributes) {
+		
+		if (result.hasErrors()) {
+			return add(trainning);
+		}
+		
+		ModelAndView mv = new ModelAndView("redirect:/trainning");
+		try{
+			trainningService.update(trainning);
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.UPDATE_TRAINNING_SUCCESS.getMsg());
+		} catch (ApiServiceException e) {
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());		
+		}		
+		return mv;
+	}	
+	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public ModelAndView confirmDelete(Trainning trainning, RedirectAttributes attributes) {
+	public ModelAndView confirmDelete(TrainningRequest trainning, RedirectAttributes attributes) {
 		ModelAndView mv = new ModelAndView("redirect:/trainning");
 		try{
 			trainningService.delete(trainning.getId());

@@ -52,7 +52,8 @@
 				              	
 				              	<div class="card-action right-align">
 			              			<a class="btn-floating btn-small waves-effect waves-light #ff9100 orange accent-4">
-			              				<i class="material-icons">edit</i>
+			              				<i class="material-icons"
+			              					th:onclick="'javascript:alterar(\'' + ${item.id} + '\');'">edit</i>
 			              			</a>
 			              			<a class="btn-floating btn-small waves-effect waves-light #ff9100 orange accent-4">
 			              				<i class="material-icons"
@@ -113,6 +114,10 @@
 		  </div>
 		</div>				
 		
+		<form id="formUpdate" action="trainning/update" method="GET">
+			<input type="hidden" name="id" id="trainningIdAlterar"/>
+		</form>
+		
 	</th:block>
 </html>
 <script>
@@ -122,6 +127,10 @@ function remover(id) {
 }
 function confirmaRemover(id) {
 	$('#formRemover').submit();
+}
+function alterar(id) {
+	$('#trainningIdAlterar').val(id);
+	$('#formUpdate').submit();
 }
 function notification() {
 	$('#notificationModal').modal('open');

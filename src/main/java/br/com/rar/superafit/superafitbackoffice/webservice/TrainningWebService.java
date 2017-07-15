@@ -2,6 +2,7 @@ package br.com.rar.superafit.superafitbackoffice.webservice;
 
 import br.com.rar.superafit.superafitbackoffice.model.CreateTrainningRequest;
 import br.com.rar.superafit.superafitbackoffice.model.ListTrainningResponse;
+import br.com.rar.superafit.superafitbackoffice.model.TrainningResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -17,6 +18,9 @@ public interface TrainningWebService {
 
 	@GET("day-training")
 	Call<ListTrainningResponse> getTrainning(@Query("date") String string);
+	
+	@GET("day-training/{id}")
+	Call<TrainningResponse> getSpecificTrainning(@Path("id") String id);
 	
 	@DELETE("day-training/{id}")
 	Call<Void> delete(@Path("id") String id);

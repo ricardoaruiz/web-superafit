@@ -10,10 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.rar.superafit.superafitbackoffice.controller.model.Trainning;
+import br.com.rar.superafit.superafitbackoffice.controller.model.TrainningRequest;
 import br.com.rar.superafit.superafitbackoffice.model.CreateTrainningRequest;
 import br.com.rar.superafit.superafitbackoffice.model.ListTrainningResponse;
 import br.com.rar.superafit.superafitbackoffice.model.MovementRequest;
+import br.com.rar.superafit.superafitbackoffice.model.TrainningResponse;
 import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
 import br.com.rar.superafit.superafitbackoffice.utils.DateFormatUtil;
 import br.com.rar.superafit.superafitbackoffice.utils.MessageEnum;
@@ -50,8 +51,27 @@ public class TrainningService {
 			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
 		}
 	}
+
+	public TrainningResponse get(String id) {
+		try {
+			Call<TrainningResponse> call = webServiceClient.getTrainningService().getSpecificTrainning(id);
+			Response<TrainningResponse> response = call.execute();
+			
+			LOG.info("Busca do treino diário específico http-status: " + response.code());
+			if (!response.isSuccessful()) {
+				String bodyError = response.errorBody().string();
+				LOG.info("Busca do treino diário específico body-error: " + bodyError);
+				throw new ApiServiceException(response.code(), bodyError);				
+			}
+			
+			return response.body();
+		} catch (IOException e) {
+			LOG.error("Erro ao obter treino diário específico", e);
+			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
+		}
+	}
 	
-	public void save(Trainning trainning) {
+	public void save(TrainningRequest trainning) {
 		try {
 			CreateTrainningRequest trainningRequest = getTrainningRequest(trainning);
 			Call<Void> call = webServiceClient.getTrainningService().create(trainningRequest);
@@ -67,6 +87,11 @@ public class TrainningService {
 			LOG.error("Erro ao criar treino diário", e);
 			throw new ApiServiceException(MessageEnum.API_GENERIC_ERROR.getMsg());
 		}
+	}
+	
+	public void update(TrainningRequest trainning) {
+		delete(trainning.getId());
+		save(trainning);		
 	}
 	
 	public void delete(String id) {
@@ -106,7 +131,7 @@ public class TrainningService {
 		}
 	}	
 	
-	private CreateTrainningRequest getTrainningRequest(Trainning trainning) {
+	private CreateTrainningRequest getTrainningRequest(TrainningRequest trainning) {
 		CreateTrainningRequest request = new CreateTrainningRequest();
 		
 		request.setDate(trainning.getDate());
@@ -119,7 +144,7 @@ public class TrainningService {
 		return request;
 	}
 
-	private List<MovementRequest> getMovementList(Trainning trainning) {
+	private List<MovementRequest> getMovementList(TrainningRequest trainning) {
 		
 		List<MovementRequest> toReturn = new ArrayList<MovementRequest>();
 		

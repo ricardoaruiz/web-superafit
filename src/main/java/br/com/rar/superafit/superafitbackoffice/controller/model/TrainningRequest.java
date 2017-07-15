@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class Trainning implements Serializable {
+public class TrainningRequest implements Serializable {
 
 	private static final long serialVersionUID = -5724512993614729322L;
 
