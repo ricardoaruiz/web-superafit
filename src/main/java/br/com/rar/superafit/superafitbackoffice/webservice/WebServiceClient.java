@@ -50,5 +50,9 @@ public class WebServiceClient {
 	public TrainningWebService getTrainningService() {
 		return retrofit.create(TrainningWebService.class);
 	}
+
+	public LoginWebService getLoginWebService() {
+		return retrofit.create(LoginWebService.class);
+	}
 	
 }

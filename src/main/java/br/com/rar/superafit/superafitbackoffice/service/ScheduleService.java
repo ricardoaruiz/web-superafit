@@ -2,6 +2,8 @@ package br.com.rar.superafit.superafitbackoffice.service;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,9 @@ public class ScheduleService {
 	@Autowired
 	private WebServiceClient webServiceClient;
 	
-	public ListScheduleResponse list() {				
+	public ListScheduleResponse list(String jwtToken) {				
 		try {
-			Call<ListScheduleResponse> call = webServiceClient.getScheduleWebService().list();
+			Call<ListScheduleResponse> call = webServiceClient.getScheduleWebService().list(jwtToken);
 			Response<ListScheduleResponse> response = call.execute();
 			
 			LOG.info("Consulta horários http-status: " + response.code());
@@ -44,9 +46,9 @@ public class ScheduleService {
 		}
 	}
 
-	public void create(Schedule schedule) {		
+	public void create(Schedule schedule, String jwtToken) {		
 		try {			
-			Call<Void> call = webServiceClient.getScheduleWebService().create(getCreateScheduleRequest(schedule));
+			Call<Void> call = webServiceClient.getScheduleWebService().create(getCreateScheduleRequest(schedule), jwtToken);
 			Response<Void> response = call.execute();
 			
 			LOG.info("Criar horário http-status: " + response.code());
@@ -61,9 +63,9 @@ public class ScheduleService {
 		}		
 	}
 	
-	public void remove(Schedule schedule) {
+	public void remove(Schedule schedule, String jwtToken) {
 		try {
-			Call<Void> call = webServiceClient.getScheduleWebService().remove(getRemoveScheduleRequest(schedule));
+			Call<Void> call = webServiceClient.getScheduleWebService().remove(getRemoveScheduleRequest(schedule), jwtToken);
 			Response<Void> response = call.execute();
 			
 			LOG.info("Remover horário http-status: " + response.code());
@@ -79,9 +81,9 @@ public class ScheduleService {
 		}
 	}
 	
-	public void notification() {
+	public void notification(String jwtToken) {
 		try {
-			Call<Void> call = webServiceClient.getScheduleWebService().notification();
+			Call<Void> call = webServiceClient.getScheduleWebService().notification(jwtToken);
 			Response<Void> response = call.execute();
 			
 			LOG.info("Notificação de horários http-status: " + response.code());

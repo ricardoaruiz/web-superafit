@@ -6,6 +6,9 @@ public enum MessageEnum {
 	API_GENERIC_ERROR(MessageConstants.API_GENERIC_ERROR),
 	API_MSG_UNAVAILABLE(MessageConstants.API_MSG_UNAVAILABLE),
 	API_MSG_INTERNAL_SERVER_ERROR(MessageConstants.API_MSG_INTERNAL_SERVER_ERROR),
+	API_MSG_UNAUTHORIZED(MessageConstants.API_MSG_UNAUTHORIZED),
+	API_MSG_JWT_TOKEN_EXPIRED(MessageConstants.API_MSG_JWT_TOKEN_EXPIRED),
+	API_UNMAPPED_ERROR(MessageConstants.API_UNMAPPED_ERROR),
 
 	//Schedule
 	SCHEDULE_REQUIRED_WEEK_DAY(MessageConstants.SCHEDULE_REQUIRED_WEEK_DAY),
@@ -40,6 +43,9 @@ public enum MessageEnum {
 		public static final String API_GENERIC_ERROR = "api_generic_error";
 		public static final String API_MSG_UNAVAILABLE = "api_msg_unavailable";		
 		public static final String API_MSG_INTERNAL_SERVER_ERROR = "api_msg_internal_server_error";
+		public static final String API_MSG_UNAUTHORIZED = "api_message_unauthorized";
+		public static final String API_MSG_JWT_TOKEN_EXPIRED = "api_message_jwt_token_expired";
+		public static final String API_UNMAPPED_ERROR = "api_unmapped_error";
 
 		//Schedule
 		public static final String SCHEDULE_REQUIRED_WEEK_DAY = "schedule_required_week_day";

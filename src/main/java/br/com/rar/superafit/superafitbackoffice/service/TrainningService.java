@@ -30,11 +30,11 @@ public class TrainningService {
 	@Autowired
 	private WebServiceClient webServiceClient;
 
-	public ListTrainningResponse list() {
+	public ListTrainningResponse list(String jwtToken) {
 		
 		try {
 			Call<ListTrainningResponse> call = webServiceClient.getTrainningService().getTrainning(
-					DateFormatUtil.toString(new Date(), DateFormatUtil.Format.DIA_MES_ANO));
+					DateFormatUtil.toString(new Date(), DateFormatUtil.Format.DIA_MES_ANO), jwtToken);
 		
 			Response<ListTrainningResponse> response = call.execute();
 			
@@ -52,9 +52,9 @@ public class TrainningService {
 		}
 	}
 
-	public TrainningResponse get(String id) {
+	public TrainningResponse get(String id, String jwtToken) {
 		try {
-			Call<TrainningResponse> call = webServiceClient.getTrainningService().getSpecificTrainning(id);
+			Call<TrainningResponse> call = webServiceClient.getTrainningService().getSpecificTrainning(id, jwtToken);
 			Response<TrainningResponse> response = call.execute();
 			
 			LOG.info("Busca do treino diário específico http-status: " + response.code());
@@ -71,10 +71,10 @@ public class TrainningService {
 		}
 	}
 	
-	public void save(TrainningRequest trainning) {
+	public void save(TrainningRequest trainning, String jwtToken) {
 		try {
 			CreateTrainningRequest trainningRequest = getTrainningRequest(trainning);
-			Call<Void> call = webServiceClient.getTrainningService().create(trainningRequest);
+			Call<Void> call = webServiceClient.getTrainningService().create(trainningRequest, jwtToken);
 			Response<Void> response = call.execute();
 			
 			LOG.info("Criação de treino diário http-status: " + response.code());
@@ -89,14 +89,14 @@ public class TrainningService {
 		}
 	}
 	
-	public void update(TrainningRequest trainning) {
-		delete(trainning.getId());
-		save(trainning);		
+	public void update(TrainningRequest trainning, String jwtToken) {
+		delete(trainning.getId(), jwtToken);
+		save(trainning, jwtToken);		
 	}
 	
-	public void delete(String id) {
+	public void delete(String id, String jwtToken) {
 		try {
-			Call<Void> call = webServiceClient.getTrainningService().delete(id);
+			Call<Void> call = webServiceClient.getTrainningService().delete(id, jwtToken);
 			Response<Void> response = call.execute();
 			
 			LOG.info("Remoção de treino diário http-status: " + response.code());
@@ -113,9 +113,9 @@ public class TrainningService {
 		
 	}
 	
-	public void notification() {
+	public void notification(String jwtToken) {
 		try {
-			Call<Void> call = webServiceClient.getTrainningService().notification();
+			Call<Void> call = webServiceClient.getTrainningService().notification(jwtToken);
 			Response<Void> response = call.execute();
 			
 			LOG.info("Notificação de treino diário http-status: " + response.code());

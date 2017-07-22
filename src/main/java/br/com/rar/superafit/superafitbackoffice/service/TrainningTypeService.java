@@ -23,9 +23,9 @@ public class TrainningTypeService {
 	@Autowired
 	private WebServiceClient webServiceClient;
 	
-	public List<TrainningTypeResponse> findAllTrainningType() {
+	public List<TrainningTypeResponse> findAllTrainningType(String jwtToken) {
 		try {
-			Call<List<TrainningTypeResponse>> call = webServiceClient.getTrainningTypeService().findAll();
+			Call<List<TrainningTypeResponse>> call = webServiceClient.getTrainningTypeService().findAll(jwtToken);
 			Response<List<TrainningTypeResponse>> response = call.execute();
 			
 			LOG.info("Consulta de tipos de treinamento http-status: " + response.code());

@@ -2,6 +2,7 @@ package br.com.rar.superafit.superafitbackoffice.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ import br.com.rar.superafit.superafitbackoffice.utils.SFConstants;
 
 @Controller
 @RequestMapping("trainning")
-public class TrainningController {
+public class TrainningController extends BaseController {
 
 	private final Logger LOG = LoggerFactory.getLogger(TrainningController.class);
 	
@@ -42,11 +43,11 @@ public class TrainningController {
 	private MovementService movementService;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(HttpSession session) {
 		ModelAndView mv = new ModelAndView("trainning/list");		
 		try{
 			LOG.info("Recuperando o treino diário");
-			ListTrainningResponse trainning = trainningService.list();
+			ListTrainningResponse trainning = trainningService.list(getJwtToken(session));
 			
 			if(trainning == null || trainning.getData() == null && trainning.getData().isEmpty()) {
 				mv.addObject(SFConstants.ExportViewValuesKey.INFORMATION, MessageEnum.TRAINNING_MSG_NOT_FOUND.getMsg());
@@ -59,18 +60,19 @@ public class TrainningController {
 		} catch(ApiServiceException e) {
 			LOG.error("Erro ao consultar o treino diário");
 			mv.addObject(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+			handleApiServiceException(e, mv, session);
 		}		
 		return mv;
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
-	public ModelAndView add(TrainningRequest trainningRequest) {
+	public ModelAndView add(TrainningRequest trainningRequest, HttpSession session) {
 		ModelAndView mv = new ModelAndView("trainning/add");
 		
-		List<TrainningTypeResponse> trainningTypes = trainningTypeService.findAllTrainningType();
+		List<TrainningTypeResponse> trainningTypes = trainningTypeService.findAllTrainningType(getJwtToken(session));
 		mv.addObject("trainningTypes", trainningTypes);
 		
-		ListMovementResponse movements = movementService.findAll();
+		ListMovementResponse movements = movementService.findAll(getJwtToken(session));
 		mv.addObject("movements", movements!= null ? movements.getMovements() : null);
 		
 		return mv;
@@ -78,82 +80,90 @@ public class TrainningController {
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public ModelAndView confirmAdd(@Valid TrainningRequest trainning, BindingResult result
-			, RedirectAttributes attributes) {
+			, RedirectAttributes attributes, HttpSession session) {
 
 		if (result.hasErrors()) {
-			return add(trainning);
+			return add(trainning, session);
 		}
 		
 		ModelAndView mv = new ModelAndView("redirect:/trainning/add");
 		try{
-			trainningService.save(trainning);
+			trainningService.save(trainning, getJwtToken(session));
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.CREATE_TRAINNING_SUCCESS.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
 			attributes.addFlashAttribute("trainning", trainning);
+			handleApiServiceException(e, mv, session);
 		}		
 		return mv;
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public ModelAndView update(TrainningRequest trainning, RedirectAttributes attributes) {
+	public ModelAndView update(TrainningRequest trainning, RedirectAttributes attributes, 
+			HttpSession session) {
 		ModelAndView mv = new ModelAndView("trainning/update");
 		try{
-			br.com.rar.superafit.superafitbackoffice.model.TrainningResponse trainningResponse = trainningService.get(trainning.getId());
+			br.com.rar.superafit.superafitbackoffice.model.TrainningResponse trainningResponse = 
+					trainningService.get(trainning.getId(), getJwtToken(session));
 			
-			List<TrainningTypeResponse> trainningTypes = trainningTypeService.findAllTrainningType();
+			List<TrainningTypeResponse> trainningTypes = trainningTypeService.findAllTrainningType(getJwtToken(session));
 			mv.addObject("trainningTypes", trainningTypes);
 			
-			ListMovementResponse movements = movementService.findAll();
+			ListMovementResponse movements = movementService.findAll(getJwtToken(session));
 			mv.addObject("movements", movements!= null ? movements.getMovements() : null);
 			
 			mv.addObject("trainning",new TrainningResponse(trainningResponse));
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
-			mv.setViewName("redirect:/trainning");		
+			mv.setViewName("redirect:/trainning");	
+			handleApiServiceException(e, mv, session);
 		}
 		return mv;
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
 	public ModelAndView confirmUpdate(TrainningRequest trainning, BindingResult result, 
-			RedirectAttributes attributes) {
+			RedirectAttributes attributes, HttpSession session) {
 		
 		if (result.hasErrors()) {
-			return add(trainning);
+			return add(trainning, session);
 		}
 		
 		ModelAndView mv = new ModelAndView("redirect:/trainning");
 		try{
-			trainningService.update(trainning);
+			trainningService.update(trainning, getJwtToken(session));
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.UPDATE_TRAINNING_SUCCESS.getMsg());
 		} catch (ApiServiceException e) {
-			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());		
+			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());	
+			handleApiServiceException(e, mv, session);
 		}		
 		return mv;
 	}	
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public ModelAndView confirmDelete(TrainningRequest trainning, RedirectAttributes attributes) {
+	public ModelAndView confirmDelete(TrainningRequest trainning, RedirectAttributes attributes, 
+			HttpSession session) {
 		ModelAndView mv = new ModelAndView("redirect:/trainning");
 		try{
-			trainningService.delete(trainning.getId());
+			trainningService.delete(trainning.getId(), getJwtToken(session));
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.DELETE_TRAINNING_SUCCESS.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
 			attributes.addFlashAttribute("trainning", trainning);
+			handleApiServiceException(e, mv, session);
 		}
 		return mv;
 	}
 	
 	@RequestMapping(value="notification", method=RequestMethod.POST)
-	public ModelAndView notification(RedirectAttributes attributes) {
+	public ModelAndView notification(RedirectAttributes attributes, HttpSession session) {
 		ModelAndView mv = new ModelAndView("redirect:/trainning");
 		try {
-			trainningService.notification();
+			trainningService.notification(getJwtToken(session));
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.TRAINNING_MSG_PUBLISHED.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+			handleApiServiceException(e, mv, session);
 		}
 		return mv;
 	}	

@@ -1,6 +1,7 @@
 package br.com.rar.superafit.superafitbackoffice.service.exception;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -22,25 +23,40 @@ public class ApiServiceException extends RuntimeException {
 
 	private ErrorsResponse errors;
 	
+	private int httpCode;
+	
 	public ApiServiceException() {
 	
 	}
 	
 	public ApiServiceException(final int httpCode, String bodyError) {
+		this.httpCode = httpCode;
 		try {
+			ObjectMapper om = new ObjectMapper();
 			switch (httpCode) {
 			case HttpsURLConnection.HTTP_UNAVAILABLE:
 				LOG.error("Servidor API indisponível");
 				addError(MessageEnum.API_MSG_UNAVAILABLE.getMsg());
 				break;
+			case HttpURLConnection.HTTP_UNAUTHORIZED:
+				errors = om.readValue(getInvalidUserBodyError(), ErrorsResponse.class);
+				break;
 			case 422:
 				LOG.error("Validação de negócio");
-				ObjectMapper om = new ObjectMapper();
 				errors = om.readValue(bodyError, ErrorsResponse.class);
 				break;
-			default:
+			case HttpsURLConnection.HTTP_INTERNAL_ERROR:
 				LOG.error("Erro interno no servidor API");
-				addError(MessageEnum.API_MSG_INTERNAL_SERVER_ERROR.getMsg());
+				if (bodyError.contains("ExpiredJwtException")) {
+					this.httpCode = HttpsURLConnection.HTTP_GONE; 
+					errors = om.readValue(getSessionExpiredBodyError(), ErrorsResponse.class);
+				} else {
+					addError(MessageEnum.API_MSG_INTERNAL_SERVER_ERROR.getMsg());
+				}
+				break;
+			default:
+				LOG.error("Erro não mapeado");
+				addError(MessageEnum.API_UNMAPPED_ERROR.getMsg());
 				break;
 			}
 		} catch (IOException e) {
@@ -62,6 +78,18 @@ public class ApiServiceException extends RuntimeException {
 			errors = new ErrorsResponse();
 		}
 		errors.addError(error);
+	}
+	
+	private String getInvalidUserBodyError() {		
+		return "{\"errors\": [{\"error\":\"" + MessageEnum.API_MSG_UNAUTHORIZED.getMsg() + "\"}]}";		
+	}
+	
+	private String getSessionExpiredBodyError() {
+		return "{\"errors\": [{\"error\":\"" + MessageEnum.API_MSG_JWT_TOKEN_EXPIRED.getMsg() + "\"}]}";
+	}
+
+	public int getHttpCode() {
+		return httpCode;
 	}
 	
 }

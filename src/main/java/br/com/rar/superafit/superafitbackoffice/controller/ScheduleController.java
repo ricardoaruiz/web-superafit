@@ -1,5 +1,6 @@
 package br.com.rar.superafit.superafitbackoffice.controller;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import br.com.rar.superafit.superafitbackoffice.utils.SFConstants;
 
 @Controller
 @RequestMapping("schedule")
-public class ScheduleController {
+public class ScheduleController extends BaseController {
 
 	private final Logger LOG = LoggerFactory.getLogger(ScheduleController.class);
 	
@@ -30,13 +31,13 @@ public class ScheduleController {
 	private ScheduleService scheduleService;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ModelAndView list(RedirectAttributes attributes) {
+	public ModelAndView list(RedirectAttributes attributes, HttpSession session) {
 		
 		LOG.info("Listando os horários");
 		
 		ModelAndView mav = new ModelAndView("schedule/list");
 		try {
-			ListScheduleResponse list = scheduleService.list();			
+			ListScheduleResponse list = scheduleService.list(getJwtToken(session));			
 						
 			if(list == null || list.getSchedules() == null && list.getSchedules().isEmpty()) {
 				mav.addObject(SFConstants.ExportViewValuesKey.INFORMATION, MessageEnum.SCHEDULE_MSG_NOT_FOUND.getMsg());
@@ -49,6 +50,7 @@ public class ScheduleController {
 		} catch(ApiServiceException e) {
 			LOG.error("Erro ao consultar os horários");
 			mav.addObject(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+			handleApiServiceException(e, mav, session);
 		}
 		return mav;
 	}
@@ -62,7 +64,7 @@ public class ScheduleController {
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public ModelAndView save(@Valid Schedule schedule, BindingResult result
-			, RedirectAttributes attributes) {
+			, RedirectAttributes attributes, HttpSession session) {
 
 		if (result.hasErrors()) {
 			return add(schedule);
@@ -70,38 +72,42 @@ public class ScheduleController {
 		
 		ModelAndView mv = new ModelAndView("redirect:/schedule/add");
 		try {
-			scheduleService.create(schedule);			
+			scheduleService.create(schedule, getJwtToken(session));			
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.SCHEDULE_MSG_SAVED_SUCCESS.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
 			attributes.addFlashAttribute("schedule", schedule);
+			handleApiServiceException(e, mv, session);
 		}
 		return mv;
 		
 	}	
 	
 	@RequestMapping(value="delete", method=RequestMethod.POST)
-	public ModelAndView delete(Schedule schedule, RedirectAttributes attributes) {
+	public ModelAndView delete(Schedule schedule, RedirectAttributes attributes, 
+			HttpSession session) {
 		
 		ModelAndView mv = new ModelAndView("redirect:/schedule");
 		try {
-			scheduleService.remove(schedule);			
+			scheduleService.remove(schedule, getJwtToken(session));			
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.SCHEDULE_MSG_REMOVED_SUCCESS.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+			handleApiServiceException(e, mv, session);
 		}
 		return mv;
 		
 	}
 
 	@RequestMapping(value="notification", method=RequestMethod.POST)
-	public ModelAndView notification(RedirectAttributes attributes) {
+	public ModelAndView notification(RedirectAttributes attributes, HttpSession session) {
 		ModelAndView mv = new ModelAndView("redirect:/schedule");
 		try {
-			scheduleService.notification();
+			scheduleService.notification(getJwtToken(session));
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.SCHEDULE_MSG_PUBLISHED.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
+			handleApiServiceException(e, mv, session);
 		}
 		return mv;
 	}

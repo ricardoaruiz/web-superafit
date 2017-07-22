@@ -22,9 +22,9 @@ public class MovementService {
 	@Autowired
 	private WebServiceClient webServiceClient;
 	
-	public ListMovementResponse findAll() {
+	public ListMovementResponse findAll(String jwtToken) {
 		try {
-			Call<ListMovementResponse> call = webServiceClient.getMovementWebService().findAll();
+			Call<ListMovementResponse> call = webServiceClient.getMovementWebService().findAll(jwtToken);
 			Response<ListMovementResponse> response = call.execute();
 			
 			LOG.info("Consulta de exercícios http-status: " + response.code());
