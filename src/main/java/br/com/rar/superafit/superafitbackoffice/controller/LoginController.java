@@ -49,5 +49,11 @@ public class LoginController extends BaseController {
 		
 		return mv;
 	}
+
+	@RequestMapping(value="logoff", method=RequestMethod.GET)
+	public ModelAndView logoff(HttpSession session) {
+		session.invalidate();
+		return new ModelAndView("redirect:/");
+	}
 	
 }
