@@ -1,5 +1,6 @@
 package br.com.rar.superafit.superafitbackoffice.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -24,6 +25,7 @@ import br.com.rar.superafit.superafitbackoffice.service.MovementService;
 import br.com.rar.superafit.superafitbackoffice.service.TrainningService;
 import br.com.rar.superafit.superafitbackoffice.service.TrainningTypeService;
 import br.com.rar.superafit.superafitbackoffice.service.exception.ApiServiceException;
+import br.com.rar.superafit.superafitbackoffice.utils.DateFormatUtil;
 import br.com.rar.superafit.superafitbackoffice.utils.MessageEnum;
 import br.com.rar.superafit.superafitbackoffice.utils.SFConstants;
 
@@ -56,6 +58,7 @@ public class TrainningController extends BaseController {
 			}
 			
 			mv.addObject("list", trainning);
+			mv.addObject("today", DateFormatUtil.toString(new Date(), DateFormatUtil.Format.DIA_MES_ANO));
 			LOG.info("Treino diário recuperado com sucesso.");
 		} catch(ApiServiceException e) {
 			LOG.error("Erro ao consultar o treino diário");
@@ -72,7 +75,7 @@ public class TrainningController extends BaseController {
 		List<TrainningTypeResponse> trainningTypes = trainningTypeService.findAllTrainningType(getJwtToken(session));
 		mv.addObject("trainningTypes", trainningTypes);
 		
-		ListMovementResponse movements = movementService.findAll(getJwtToken(session));
+		ListMovementResponse movements = movementService.findAllActived(getJwtToken(session));
 		mv.addObject("movements", movements!= null ? movements.getMovements() : null);
 		
 		return mv;
@@ -92,7 +95,7 @@ public class TrainningController extends BaseController {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.SUCCESS, MessageEnum.CREATE_TRAINNING_SUCCESS.getMsg());
 		} catch(ApiServiceException e) {
 			attributes.addFlashAttribute(SFConstants.ExportViewValuesKey.API_ERRORS, e.getErrors());
-			attributes.addFlashAttribute("trainning", trainning);
+			attributes.addFlashAttribute("trainningRequest", trainning);
 			handleApiServiceException(e, mv, session);
 		}		
 		return mv;
@@ -109,7 +112,7 @@ public class TrainningController extends BaseController {
 			List<TrainningTypeResponse> trainningTypes = trainningTypeService.findAllTrainningType(getJwtToken(session));
 			mv.addObject("trainningTypes", trainningTypes);
 			
-			ListMovementResponse movements = movementService.findAll(getJwtToken(session));
+			ListMovementResponse movements = movementService.findAllActived(getJwtToken(session));
 			mv.addObject("movements", movements!= null ? movements.getMovements() : null);
 			
 			mv.addObject("trainning",new TrainningResponse(trainningResponse));

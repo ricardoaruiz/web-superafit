@@ -1,0 +1,118 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
+
+	<th:block layout:fragment="content">
+	
+		<div id="principal" class="container">
+
+			<div class="page-header">
+			  <h2>Cadastro de Exercício</h2>
+			</div>
+	
+			<form id="addExercice" action="/exercice" method="POST" class="col s12" th:object="${exerciceRequest}">
+			
+				<th:block layout:replace="fragments/messages-form"/>
+				<br/>
+			
+				<div class="row">
+			        <div class="col s12 m6 l12">
+			          <div class="card">
+			            <div class="card-content">
+			            	<span class="card-title">Dados do exercício</span>
+			            	
+			            	<input type="hidden" id="id" name="id" th:field="*{id}"></input>
+			            	<div class="row">
+								<div class="input-field col s6">
+									<i class="material-icons prefix">subtitles</i>
+									<input type="text" id="name" name="name" 
+										th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? invalid" maxlength="50"/>
+									<label for="name">Nome</label>
+								</div>
+								<div class="input-field col s6">	
+									<i class="material-icons prefix">subtitles</i>
+									<input type="text" id="translate" name="translate" 
+										th:field="*{translate}" th:classappend="${#fields.hasErrors('translate')} ? invalid" maxlength="50"/>
+									<label for="translate">Tradução</label>
+								</div>
+							</div>
+			            	<div class="row">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">subtitles</i>
+									<textarea id="description" maxlength="400" class="materialize-textarea" th:field="*{description}"></textarea> 
+									<label for="description">Descrição</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">subtitles</i>
+									<input type="checkbox" id="active" name="active" th:checked="${exerciceRequest.active}"/>
+      								<label for="active">Ativado</label>
+								</div>
+							</div>			            
+			            </div>
+			          </div>
+			        </div>
+				</div>
+				
+				<div class="row">
+			        <div class="col s12 m6 l12">
+			          <div class="card">
+			            <div class="card-content">
+			            	<span class="card-title">Lista de exercícios</span>
+			          
+			          		<table id="exerciceTable" class="centered highlight" style="cursor: pointer;">
+			          			<thead>
+	  							   <tr>
+								      <th>Nome</th>
+								      <th>Tradução</th>
+								      <th>Descrição</th>
+								      <th>Ativado</th>
+							  		</tr>
+								</thead>
+								<tbody id="movementsTBody">
+									<tr th:each="exercice : ${exercices}" th:onclick="'javascript:update(\'' + ${exercice.id} + '\');'">
+										<td th:text="${exercice.name}"></td>
+										<td th:text="${exercice.translate}"></td>
+										<td>
+											<div th:text="${exercice.description}"></div>
+										</td>
+										<td th:text="${exercice.active} ? Sim : Não"></td>
+									</tr>
+								</tbody>
+			          		</table>
+			            
+			            </div>
+			          </div>
+			        </div>
+			    </div>				
+			
+			</form>
+			
+			<div class="fixed-action-btn horizontal">
+		    	<a class="btn-floating waves-effect waves-light tooltipped tooltipped #ff9100 orange accent-4" 
+		    		data-position="top" data-delay="50" data-tooltip="Confirmar" 
+		    		href="#" onclick="submitForm();">
+		    			<i class="material-icons">done</i>
+		    	</a>
+			</div>	
+			
+		</div>
+		
+		<form id="frmCallUpdate" action="/exercice" method="GET">
+			<input type="hidden" id="exerciceId" name="id"></input>
+		</form>
+		
+	</th:block>
+	
+	
+</html>
+<script>
+function update(exerciceId) {
+	$('#exerciceId').val(exerciceId);
+	$('#frmCallUpdate').submit();
+}
+function submitForm() {
+	$('#addExercice').submit();
+}
+</script>

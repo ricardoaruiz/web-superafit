@@ -1,8 +1,11 @@
 package br.com.rar.superafit.superafitbackoffice.controller.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
+
+import br.com.rar.superafit.superafitbackoffice.utils.DateFormatUtil;
 
 public class TrainningRequest implements Serializable {
 
@@ -11,7 +14,7 @@ public class TrainningRequest implements Serializable {
 	private String id;
 	
 	@NotBlank(message = "O dia do treino é obrigatório")
-	private String date;
+	private String date = DateFormatUtil.toString(new Date(), DateFormatUtil.Format.DIA_MES_ANO);
 	
 	@NotBlank(message = "O tipo de treino é obrigatório")
 	private String type;

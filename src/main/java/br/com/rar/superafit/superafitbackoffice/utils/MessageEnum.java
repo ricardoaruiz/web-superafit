@@ -24,7 +24,10 @@ public enum MessageEnum {
 	TRAINNING_MSG_PUBLISHED(MessageConstants.TRAINNING_MSG_PUBLISHED), 
 	TRAINNING_MSG_NOT_FOUND(MessageConstants.TRAINNING_MSG_NOT_FOUND),
 	TRAINNING_MSG_REMIDER_PUBLISH(MessageConstants.TRAINNING_MSG_REMIDER_PUBLISH), 
-	UPDATE_TRAINNING_SUCCESS(MessageConstants.UPDATE_TRAINNING_SUCCESS); 
+	UPDATE_TRAINNING_SUCCESS(MessageConstants.UPDATE_TRAINNING_SUCCESS), 
+	
+	//Exercice
+	CREATE_EXERCICE_SUCCESS(MessageConstants.CREATE_EXERCICE_SUCCESS); 
 	
 	
 	private final String msg;
@@ -64,6 +67,9 @@ public enum MessageEnum {
 		public static final String TRAINNING_MSG_REMIDER_PUBLISH = "trainning_msg_reminder_publish";
 		public static final String TRAINNING_MSG_NOT_FOUND = "trainning_msg_not_found";
 		public static final String UPDATE_TRAINNING_SUCCESS = "update_trainning_success";
+		
+		//Exercice
+		public static final String CREATE_EXERCICE_SUCCESS = "create_exercice_success";
 		
 	}
 	

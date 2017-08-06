@@ -1,23 +1,21 @@
-package br.com.rar.superafit.superafitbackoffice.model;
+package br.com.rar.superafit.superafitbackoffice.controller.model;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.NotEmpty;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class MovementResponse implements Serializable{
+public class ExerciceRequest implements Serializable {
 
-	private static final long serialVersionUID = 8820488516302539321L;
+	private static final long serialVersionUID = 3576841608941749128L;
 
 	private String id;
 	
+	@NotEmpty(message="O nome do exercício deve ser informado.")
 	private String name;
 	
 	private String translate;
 	
 	private String description;
-	
-	private String qtRep;
 	
 	private boolean active;
 
@@ -53,14 +51,6 @@ public class MovementResponse implements Serializable{
 		this.description = description;
 	}
 
-	public String getQtRep() {
-		return qtRep;
-	}
-
-	public void setQtRep(String qtRep) {
-		this.qtRep = qtRep;
-	}
-
 	public boolean isActive() {
 		return active;
 	}
@@ -68,5 +58,5 @@ public class MovementResponse implements Serializable{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
+
 }

@@ -7,7 +7,10 @@
 		<div id="principal" class="container">
 
 			<div class="page-header">
-			  <h2>Treino <small th:if="${list != null}" th:text="'do dia ' + ${list.data[0].date}"></small></h2>
+			  <h2>Treino 
+			  	<small th:if="${list != null}" th:text="'do dia ' + ${list.data[0].date}"></small>
+			  	<small th:if="${list == null}" th:text="'do dia ' + ${today}"></small>	
+			  </h2>
 			</div>
 
 			<th:block layout:replace="fragments/messages"/>
@@ -44,7 +47,9 @@
 											<tr th:each="movement : ${item.movements}">
 												<td th:text="${movement.name}"></td>
 												<td th:text="${movement.qtRep}"></td>
-												<td th:text="${movement.description}"></td>
+												<td>
+													<div th:text="${movement.description}"></div>
+												</td>
 											</tr>
 										</tbody>
 									</table>

@@ -6,11 +6,11 @@
 	
 		<div id="principal" class="container">
 
-			<div class="page-header">
-			  <h2>Treino<small> do dia</small></h2>
-			</div>
-
 			<form id="addTrainning" action="add" method="POST" class="col s12" th:object="${trainningRequest}">
+			
+				<div class="page-header">
+				  <h2>Treino<small th:text="' do dia ' + *{date}"></small></h2>
+				</div>
 			
 				<th:block layout:replace="fragments/messages-form"/>
 				<br/>
@@ -36,7 +36,9 @@
 							<div class="row">			       
 						       <div class="input-field col s12 m6 l6">
 						          <i class="material-icons prefix">query_builder</i>
-						          <input id="scheduleStart" name="scheduleStart" type="text" class="datepicker" th:field="*{date}" th:classappend="${#fields.hasErrors('date')} ? invalid"/>
+						          <input id="scheduleStart" name="scheduleStart" type="text" 
+						          	th:field="*{date}" th:classappend="${#fields.hasErrors('date')} ? invalid"
+						          	readonly="readonly"/>
 						          <label for="scheduleStart">Data do Treino</label>
 						       </div>
 							   <div class="input-field col s12 m6 l6">
@@ -123,6 +125,17 @@
 			</div>			
 
 		</div>
+		
+		<!-- Notification Modal -->
+		<div id="notificationDuplicateMovement" class="modal">
+		  <div class="modal-content">
+		    <h4>Exercício já informado</h4>
+		    <p><h5>Esse exercício já foi inserido nesse treino.</h5></p>
+		  </div>
+		  <div class="modal-footer">
+		    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+		  </div>
+		</div>		
 	
 	</th:block>
 </html>
@@ -165,40 +178,52 @@ function loadValues() {
 		
 }
 
-function addMovement() {
-	
-	var selectedIndex = $('#movement option:selected').val()
-	
-	if(selectedIndex == 0) {
-		return;
-	} 
-	
-	var line = '<tr>';
-	
-	line += '<td>';
-	line += $('#movement option:selected').text();
-	line += '</td>';
-	
-	line += '<td>';
-	line += $('#repetition').val();
-	line += '</td>';	
-	
-	line += '<td onclick="removeMovement(this);">';
-	line += '<i class="material-icons sf-link">delete</i>';
-	line += '</td>';		
-	
-	line += '</tr>';
-	
-	movementId.push($('#movement').val());
-	movementRepetition.push($('#repetition').val())
-	
-	$('#movementsTBody').append(line);
-	
-	$("#movement").prop('selectedIndex', 0);
-	$('#movement').material_select();
-	$('#repetition').val('');
-	
-	
+function addMovement() {	
+	if(!movementAlreadExists(movementId, $('#movement').val())) {	
+		var selectedIndex = $('#movement option:selected').val()
+		
+		if(selectedIndex == 0) {
+			return;
+		} 
+		
+		var line = '<tr>';
+		
+		line += '<td>';
+		line += $('#movement option:selected').text();
+		line += '</td>';
+		
+		line += '<td>';
+		line += $('#repetition').val() == "" ? "0" : $('#repetition').val();
+		line += '</td>';	
+		
+		line += '<td onclick="removeMovement(this);">';
+		line += '<i class="material-icons sf-link">delete</i>';
+		line += '</td>';		
+		
+		line += '</tr>';
+		
+		movementId.push($('#movement').val());
+		movementRepetition.push($('#repetition').val() == "" ? "0" : $('#repetition').val());
+		
+		$('#movementsTBody').append(line);
+		
+		$("#movement").prop('selectedIndex', 0);
+		$('#movement').material_select();
+		$('#repetition').val('');		
+	}
+}
+function movementAlreadExists(movements, movement) {
+	var toReturn = false;
+	movements.forEach(function(entry) {
+		if(entry == movement) {
+			toReturn = true;
+			$("#movement").prop('selectedIndex', 0);
+			$('#movement').material_select();
+			$('#repetition').val('');
+			$('#notificationDuplicateMovement').modal('open');
+		}
+	});
+	return toReturn;
 }
 function removeMovement(obj) {
 	var indexLine = $(obj).closest('tr').index();	
