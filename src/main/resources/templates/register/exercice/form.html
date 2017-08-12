@@ -24,13 +24,13 @@
 			            	<input type="hidden" id="id" name="id" th:field="*{id}"></input>
 			            	<div class="row">
 								<div class="input-field col s6">
-									<i class="material-icons prefix">subtitles</i>
+									<i class="material-icons prefix">description</i>
 									<input type="text" id="name" name="name" 
 										th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? invalid" maxlength="50"/>
 									<label for="name">Nome</label>
 								</div>
 								<div class="input-field col s6">	
-									<i class="material-icons prefix">subtitles</i>
+									<i class="material-icons prefix">g_translate</i>
 									<input type="text" id="translate" name="translate" 
 										th:field="*{translate}" th:classappend="${#fields.hasErrors('translate')} ? invalid" maxlength="50"/>
 									<label for="translate">Tradução</label>
@@ -45,7 +45,7 @@
 							</div>
 							<div class="row">
 								<div class="input-field col s12">
-									<i class="material-icons prefix">subtitles</i>
+									<i class="material-icons prefix">visibility</i>
 									<input type="checkbox" id="active" name="active" th:checked="${exerciceRequest.active}"/>
       								<label for="active">Ativado</label>
 								</div>

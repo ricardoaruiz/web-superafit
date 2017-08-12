@@ -24,7 +24,7 @@
 			
 							<div class="row">
 								<div class="input-field col s12">
-								  <i class="material-icons prefix">subtitles</i>
+								  <i class="material-icons prefix">directions_run</i>
 								  <input type="hidden" id="trainningTypeText" th:value="*{type}"/>
 								  <select id="trainningType" name="type" th:field="*{type}" th:classappend="${#fields.hasErrors('type')} ? invalid">
 								    <option value="" selected="true">Selecione o tipo de treinamento</option>
@@ -38,12 +38,12 @@
 							
 							<div class="row">			       
 						       <div class="input-field col s12 m6 l6">
-						          <i class="material-icons prefix">query_builder</i>
+						          <i class="material-icons prefix">date_range</i>
 						          <input id="scheduleStart" name="scheduleStart" readonly="readonly" type="text" th:field="*{date}" th:classappend="${#fields.hasErrors('date')} ? invalid"/>
 						          <label for="scheduleStart">Data do Treino</label>
 						       </div>
 							   <div class="input-field col s12 m6 l6">
-								  <i class="material-icons prefix">subtitles</i>
+								  <i class="material-icons prefix">refresh</i>
 								  <input type="number" id="rounds" name="rounds" min="0" th:field="*{round}" th:classappend="${#fields.hasErrors('round')} ? invalid"/>					  
 								  <label for="rounds">Rounds</label>
 								</div>			       
@@ -51,7 +51,7 @@
 						    
 							<div class="row">
 							  <div class="input-field col s12">
-							  	<i class="material-icons prefix">subtitles</i>
+							  	<i class="material-icons prefix">description</i>
 							    <textarea id="textarea1" maxlength="100" class="materialize-textarea" th:field="*{description}"></textarea>
 							    <label for="textarea1">Descrição do treino</label>
 							  </div>
@@ -75,7 +75,7 @@
 				
 						<div class="row">
 							<div class="input-field col s12 m6 l6">
-							  <i class="material-icons prefix">subtitles</i>
+							  <i class="material-icons prefix">report</i>
 							  <select id="movement" name="movement" class="invalid">
 							    <option value="" selected="true">Selecione o exercício</option>
 							    <option th:each="m : ${movements}" 
@@ -85,7 +85,7 @@
 							  <label for="movement">Exercício</label>
 							</div>
 						   <div class="input-field col s12 m6 l6">
-							  <i class="material-icons prefix">subtitles</i>
+							  <i class="material-icons prefix">refresh</i>
 							  <input id="repetition" type="number" min="0"/>
 							  <label for="number">Repetições</label>							  
 							</div>					

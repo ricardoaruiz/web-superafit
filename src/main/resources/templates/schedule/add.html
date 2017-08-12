@@ -21,7 +21,7 @@
 			            <div class="card-content">			
 								<div class="row">
 									<div class="input-field col s12" th:classappend="${#fields.hasErrors('weekDay')} ? invalid">
-									  <i class="material-icons prefix">subtitles</i>
+									  <i class="material-icons prefix">date_range</i>
 									  <select id="weekDay" name="weekDay" th:field="*{weekDay}" class="invalid">
 									    <option value="" disabled="true" selected="true">Selecione o dia da semana</option>
 									    <option th:each="weekDay : ${weekDays}" 
