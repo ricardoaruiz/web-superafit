@@ -20,10 +20,10 @@ public class KeepAliveSchedule {
 	@Autowired
 	private WebServiceClient webServiceClient;
 	
-	@Scheduled(fixedRate=600000)
+	@Scheduled(fixedRate=6000)
 	public void keepAlive() {
 		try {
-			LOG.info("Chamando API isOn");
+			LOG.info("Obtendo os dados de treino da fonte de dados para verificação...");
 			Call<Void> call = webServiceClient.getKeepAliveApiWebService().isOn();
 			Response<Void> response = call.execute();
 			LOG.info("Http code: " + response.code());

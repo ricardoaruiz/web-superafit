@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("app/isOn")
+@RequestMapping("app/trainning-available")
 public class KeepAliveController {
 
 	@RequestMapping(method=RequestMethod.GET)
