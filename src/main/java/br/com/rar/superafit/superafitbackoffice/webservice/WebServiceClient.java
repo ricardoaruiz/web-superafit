@@ -55,4 +55,8 @@ public class WebServiceClient {
 		return retrofit.create(LoginWebService.class);
 	}
 	
+	public KeepAliveApiWebService getKeepAliveApiWebService() {
+		return retrofit.create(KeepAliveApiWebService.class);
+	}
+	
 }
