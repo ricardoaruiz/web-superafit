@@ -20,7 +20,7 @@ public class KeepAliveSchedule {
 	@Autowired
 	private WebServiceClient webServiceClient;
 	
-	@Scheduled(fixedRate=6000)
+	@Scheduled(fixedRate=600000)
 	public void keepAlive() {
 		try {
 			LOG.info("Obtendo os dados de treino da fonte de dados para verificação...");
