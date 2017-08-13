@@ -13,15 +13,15 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 @Component
-public class KeepAliveSchedule {
+public class VerificaDisponibilidadeScheduler {
 
-	private final Logger LOG = LoggerFactory.getLogger(KeepAliveSchedule.class);
+	private final Logger LOG = LoggerFactory.getLogger(VerificaDisponibilidadeScheduler.class);
 	
 	@Autowired
 	private WebServiceClient webServiceClient;
 	
 	@Scheduled(fixedRate=600000)
-	public void keepAlive() {
+	public void verificaDisponibilidade() {
 		try {
 			LOG.info("Obtendo os dados de treino da fonte de dados para verificação...");
 			Call<Void> call = webServiceClient.getKeepAliveApiWebService().isOn();

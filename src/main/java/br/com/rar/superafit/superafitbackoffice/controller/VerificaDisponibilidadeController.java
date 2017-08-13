@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("app/trainning-available")
-public class KeepAliveController {
+public class VerificaDisponibilidadeController {
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Void> keepAlive() {
+	public ResponseEntity<Void> verificaDisponibilidade() {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
