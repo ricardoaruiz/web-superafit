@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,20 +17,29 @@ import retrofit2.Response;
 public class VerificaDisponibilidadeScheduler {
 
 	private final Logger LOG = LoggerFactory.getLogger(VerificaDisponibilidadeScheduler.class);
+
+	@Value("${enable.verify.available.resources}")
+	private String enableVerifyAvailableResources;
 	
 	@Autowired
 	private WebServiceClient webServiceClient;
 	
-	@Scheduled(fixedRate=600000)
+	@Scheduled(fixedRate=6000)
 	public void verificaDisponibilidade() {
-		try {
-			LOG.info("Obtendo os dados de treino da fonte de dados para verificação...");
-			Call<Void> call = webServiceClient.getKeepAliveApiWebService().isOn();
-			Response<Void> response = call.execute();
-			LOG.info("Http code: " + response.code());
-		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+		if (isEnableVerifyAvailableResouces()) {
+			try {
+				LOG.info("Obtendo os dados de treino da fonte de dados para verificação...");
+				Call<Void> call = webServiceClient.getKeepAliveApiWebService().isOn();
+				Response<Void> response = call.execute();
+				LOG.info("Http code: " + response.code());
+			} catch (IOException e) {
+				LOG.error(e.getMessage(), e);
+			}
 		}
+	}
+
+	private boolean isEnableVerifyAvailableResouces() {
+		return Boolean.valueOf(enableVerifyAvailableResources);
 	}
 	
 }
