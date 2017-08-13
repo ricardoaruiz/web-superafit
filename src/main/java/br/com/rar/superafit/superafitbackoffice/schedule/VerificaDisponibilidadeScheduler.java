@@ -24,7 +24,7 @@ public class VerificaDisponibilidadeScheduler {
 	@Autowired
 	private WebServiceClient webServiceClient;
 	
-	@Scheduled(fixedRate=6000)
+	@Scheduled(fixedRate=600000)
 	public void verificaDisponibilidade() {
 		if (isEnableVerifyAvailableResouces()) {
 			try {
