@@ -39,7 +39,7 @@ public class ScheduleController extends BaseController {
 		try {
 			ListScheduleResponse list = scheduleService.list(getJwtToken(session));			
 						
-			if(list == null || list.getSchedules() == null && list.getSchedules().isEmpty()) {
+			if(list == null || list.getSchedules() == null || list.getSchedules().isEmpty()) {
 				mav.addObject(SFConstants.ExportViewValuesKey.INFORMATION, MessageEnum.SCHEDULE_MSG_NOT_FOUND.getMsg());
 			} else {			
 				mav.addObject(SFConstants.ExportViewValuesKey.INFORMATION, list.isSync() ? null : MessageEnum.SCHEDULE_MSG_REMIDER_PUBLISH.getMsg());
